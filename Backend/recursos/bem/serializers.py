@@ -4,13 +4,11 @@ from django.core.validators import MinValueValidator
 
 
 class BemSerializer(serializers.ModelSerializer):
-    valor = serializers.DecimalField(
-        max_digits=10, decimal_places=2, validators=[MinValueValidator(0.0)])
 
     class Meta:
         model = Bem
-        fields = ['id_bem', 'descricao', 'permite_reserva',
-                  'status_bem', 'id_tipo_bem', 'valor']
+        fields = "__all__"
+        read_only_fields = ('created_by', 'created_at')
 
 
 class TipoBemSerializer(serializers.ModelSerializer):

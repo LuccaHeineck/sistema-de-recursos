@@ -12,18 +12,14 @@ from rest_framework.generics import ListAPIView
 class BemCreateView(APIView):
     # Define que o usuário precisa estar autenticado para acessar esta view
     # permission_classes = [IsAuthenticated]
-
+    
     def post(self, request):
-        # Obtendo os dados da requisição
         serializer = BemSerializer(data=request.data)
 
-        # Validando os dados
         if serializer.is_valid():
-            # Salvando o novo bem
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            bem = serializer.save(created_by=request.user)  # Atribuindo o usuário logado
+            return Response(BemSerializer(bem).data, status=status.HTTP_201_CREATED)
         else:
-            # Retornando os erros de validação
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 

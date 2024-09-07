@@ -12,10 +12,6 @@ class TipoBem(models.Model):
 
 
 class Bem(models.Model):
-    created_by = models.ForeignKey(
-        User, related_name='items', on_delete=models.CASCADE)
-
-    created_at = models.DateTimeField(auto_now_add=True)
     STATUS_BEM_CHOICES = [
         ('R', 'Retirado'),
         ('D', 'Disponível'),
@@ -32,6 +28,10 @@ class Bem(models.Model):
     )
     id_tipo_bem = models.ForeignKey(
         TipoBem, on_delete=models.CASCADE, db_column='id_tipo_bem')
+    created_by = models.ForeignKey(
+        User, related_name='bem', on_delete=models.CASCADE)
+
+    created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         db_table = 'bem'
