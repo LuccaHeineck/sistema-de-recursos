@@ -1,8 +1,8 @@
 from django.contrib import admin
-from django.urls import path, include  # 👈 Add include here
+from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # 👇 add your myapi app urls path here
-    path('api/', include('core.urls'))
+    path('recursos/', include('core.urls')),
+    path('bem/', include('bem.urls'))
 ]
