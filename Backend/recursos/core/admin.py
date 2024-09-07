@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Pessoa, ItensReserva, ItensRetirada, Reserva, Bem, TipoPessoa, Retirada, MotivoRetirada, TipoBem, StatusBem
+from .models import *
 
 # Registrando os modelos no Django Admin
 admin.site.register(Pessoa)
@@ -11,4 +11,3 @@ admin.site.register(TipoPessoa)
 admin.site.register(Retirada)
 admin.site.register(MotivoRetirada)
 admin.site.register(TipoBem)
-admin.site.register(StatusBem)
