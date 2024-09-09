@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework.permissions import IsAuthenticated
-
+from rest_framework.generics import UpdateAPIView
 from .models import Bem
 from .serializers import BemSerializer
 from rest_framework.views import APIView
@@ -21,6 +21,17 @@ class BemCreateView(APIView):
             return Response(BemSerializer(bem).data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class BemUpdateView(UpdateAPIView):
+    queryset = Bem.objects.all()
+    serializer_class = BemSerializer
+    permission_classes = [IsAuthenticated]  # Ensure the user is authenticated
+
+    def perform_update(self, serializer):
+        # Optionally override this method if you need custom behavior on update
+        serializer.save(updated_by=self.request.user)
+
 
 
 class BemListView(APIView):
