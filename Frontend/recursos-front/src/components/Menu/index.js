@@ -14,11 +14,26 @@ const Menu = () => {
   };
 
   return (
-    <div className="bg-black text-white p-4 h-screen w-64 fixed left-0 top-0 rounded-tr-xl rounded-br-xl">
+    <div className="bg-black text-white p-4 h-screen w-64 fixed left-0 top-0 rounded-tr-xl rounded-br-xl overflow-y-auto no-scrollbar">
       <ul className="space-y-4">
         <MenuButton to="/" label="Home" Icon={HomeIcon} />
         <MenuButton to="/about" label="About" Icon={InformationCircleIcon} />
         <MenuButton to="/contact" label="Contact" Icon={UserIcon} />
+        <DropdownButton
+          label="Menu"
+          Icon={InformationCircleIcon}
+          options={options}
+        />
+        <DropdownButton
+          label="Menu"
+          Icon={InformationCircleIcon}
+          options={options}
+        />
+        <DropdownButton
+          label="Menu"
+          Icon={InformationCircleIcon}
+          options={options}
+        />
         <DropdownButton
           label="Menu"
           Icon={InformationCircleIcon}

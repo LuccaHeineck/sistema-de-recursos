@@ -39,7 +39,7 @@ const DropdownButton = ({ label, Icon, options }) => {
       </button>
       <div
         ref={dropdownRef}
-        className={`w-full bg-customGrey rounded-br-lg rounded-bl-lg shadow-lg overflow-hidden transition-max-height duration-300 ease-in-out`}
+        className={`w-full bg-customGrey rounded-br-lg rounded-bl-lg shadow-lg overflow-hidden transition-max-height duration-500 ease-in-out`}
       >
         {Object.entries(options).map(
           ([optionLabel, { path, icon: OptionIcon }]) => (
