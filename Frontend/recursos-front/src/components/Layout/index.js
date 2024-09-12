@@ -5,7 +5,7 @@ const Layout = ({ children }) => {
   return (
     <div className="font-poppins flex h-screen">
       <Menu />
-      <div className="flex-1 flex flex-col ml-64">
+      <div className="flex-1 flex flex-col ml-72">
         {" "}
         {/* Adjust ml-60 based on Menu width */}
         <Header />

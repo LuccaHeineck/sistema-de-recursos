@@ -42,14 +42,14 @@ const DropdownButton = ({ label, Icon, options }) => {
         className={`w-full bg-customGrey rounded-br-lg rounded-bl-lg shadow-lg overflow-hidden transition-max-height duration-500 ease-in-out`}
       >
         {Object.entries(options).map(
-          ([optionLabel, { path, icon: OptionIcon }]) => (
+          ([option, { path, icon: OptionIcon, label }]) => (
             <a
               key={path}
               href={path}
               className="flex pl-5 items-center space-x-4 p-3 text-lg text-customLightGrey rounded-lg hover:bg-slate-900"
             >
               {OptionIcon && <OptionIcon className="w-5 h-5" />}
-              <span>{optionLabel}</span>
+              <span>{label}</span>
             </a>
           )
         )}
