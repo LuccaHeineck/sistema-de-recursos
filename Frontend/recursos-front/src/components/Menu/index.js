@@ -10,8 +10,9 @@ import {
   CalendarIcon,
   CurrencyDollarIcon,
   BriefcaseIcon,
+  ArrowLeftStartOnRectangleIcon,
   CalendarDaysIcon,
-} from "@heroicons/react/24/solid";
+} from "@heroicons/react/24/outline";
 import DropdownButton from "./DropdownButton";
 
 const Menu = () => {
@@ -47,7 +48,7 @@ const Menu = () => {
   };
 
   return (
-    <div className="bg-black text-white p-4 h-screen w-72 fixed left-0 top-0 rounded-tr-xl rounded-br-xl overflow-y-auto no-scrollbar">
+    <div className="bg-black text-white p-4 h-screen w-72 fixed left-0 top-0 rounded-tr-xl rounded-br-xl overflow-y-auto no-scrollbar flex flex-col justify-between">
       <ul className="space-y-4">
         <DropdownButton
           label="Gerenciar"
@@ -71,6 +72,15 @@ const Menu = () => {
           options={optionsMinhaAtividade}
         />
       </ul>
+
+      <div className="pt-4 list-none">
+        <MenuButton
+          to="/logout"
+          label="Logout"
+          Icon={ArrowLeftStartOnRectangleIcon}
+          corIcon="text-red-600 mr-1"
+        />
+      </div>
     </div>
   );
 };

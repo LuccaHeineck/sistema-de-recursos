@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Table from "../Table";
 import axios from "axios";
 import Modal from "react-modal";
+import MyButton from "./MyButton";
 
 Modal.setAppElement("#root");
 
@@ -62,23 +63,30 @@ const Home = () => {
   };
 
   return (
-    <div className="p-4  min-h-screen">
+    <div className="p-4 min-h-screen font-poppins">
+      {" "}
+      {/* Aplica a fonte ao conteúdo da página */}
       <h1 className="text-2xl font-semibold mb-4">Lista de Bens</h1>
-      <Table data={data} onEdit={openModal} />{" "}
+      <Table data={data} onEdit={openModal} />
       {/* Passa a função de editar para a tabela */}
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
         contentLabel="Editar Bem"
         className="fixed inset-0 flex items-center justify-center p-4"
-        overlayClassName="fixed inset-0 bg-black bg-opacity-50"
+        overlayClassName="fixed inset-0 bg-black bg-opacity-60 backdrop-blur-xs"
       >
         {selectedBem && (
-          <div className="bg-gray-800 text-white p-8 rounded-lg max-w-md mx-auto">
+          <div
+            className="bg-gray-800 text-white p-8 rounded-lg mx-auto font-poppins" // Aplica a fonte ao conteúdo do modal
+            style={{ maxWidth: "500px", width: "100%" }}
+          >
             <h2 className="text-xl font-semibold mb-4">Editar Bem</h2>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium">Descrição:</label>
+                <label className="block text-sm font-medium mb-2">
+                  Descrição
+                </label>
                 <input
                   type="text"
                   name="descricao"
@@ -87,43 +95,51 @@ const Home = () => {
                   className="text-black mt-1 block w-full p-2 border border-gray-700 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                 />
               </div>
-              <div>
-                <label className="block text-sm font-medium">Status:</label>
-                <select
-                  name="status_bem"
-                  value={selectedBem.status_bem}
-                  onChange={handleInputChange}
-                  className="text-black mt-1 block w-full p-2 border border-gray-700 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                >
-                  <option value="D">Disponível</option>
-                  <option value="R">Retirado</option>
-                </select>
-              </div>
-              <div>
-                <label className="block text-sm font-medium">
-                  Permite reserva?
-                </label>
-                <select
-                  name="permite_reserva"
-                  value={selectedBem.permite_reserva}
-                  onChange={handleInputChange}
-                  className="text-black mt-1 block w-full p-2 border border-gray-700 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                >
-                  <option value="true">Sim</option>
-                  <option value="false">Não</option>
-                </select>
-              </div>
+
               <div className="flex gap-4">
+                <div className="flex-1">
+                  <label className="block text-sm font-medium mb-2">
+                    Status
+                  </label>
+                  <select
+                    name="status_bem"
+                    value={selectedBem.status_bem}
+                    onChange={handleInputChange}
+                    className="text-black mt-1 block w-full p-2 border border-gray-700 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  >
+                    <option value="D">Disponível</option>
+                    <option value="R">Retirado</option>
+                  </select>
+                </div>
+
+                <div className="flex-1">
+                  <label className="block text-sm font-medium mb-2">
+                    Permite reserva
+                  </label>
+                  <select
+                    name="permite_reserva"
+                    value={selectedBem.permite_reserva}
+                    onChange={handleInputChange}
+                    className="text-black mt-1 block w-full p-2 border border-gray-700 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  >
+                    <option value="true">Sim</option>
+                    <option value="false">Não</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="flex gap-4 pt-6">
                 <button
                   type="submit"
-                  className="inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                  className="inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700"
                 >
                   Salvar
                 </button>
+
                 <button
                   type="button"
                   onClick={closeModal}
-                  className="inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+                  className="inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-gray-600 hover:bg-gray-700 "
                 >
                   Cancelar
                 </button>
