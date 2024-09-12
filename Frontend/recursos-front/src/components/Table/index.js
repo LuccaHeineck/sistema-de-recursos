@@ -1,23 +1,33 @@
-const Table = ({ data }) => {
+const Table = ({ data, onEdit }) => {
+  //console.log(data);
   return (
     <div className="relative overflow-x-auto shadow-md sm:rounded-md">
       <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
         <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
           <tr>
             <th scope="col" className="px-6 py-3">
-              Product name
+              ID
             </th>
             <th scope="col" className="px-6 py-3">
-              Color
+              Descrição
             </th>
             <th scope="col" className="px-6 py-3">
-              Category
+              Tipo
             </th>
             <th scope="col" className="px-6 py-3">
-              Price
+              Criado por
             </th>
             <th scope="col" className="px-6 py-3">
-              Action
+              Status
+            </th>
+            <th scope="col" className="px-6 py-3">
+              Permite reserva
+            </th>
+            <th scope="col" className="px-6 py-3">
+              Criado em
+            </th>
+            <th scope="col" className="px-6 py-3">
+              Ações
             </th>
           </tr>
         </thead>
@@ -35,18 +45,24 @@ const Table = ({ data }) => {
                 scope="row"
                 className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
               >
-                {item.productName}
+                {item.id_bem}
               </th>
-              <td className="px-6 py-4">{item.color}</td>
-              <td className="px-6 py-4">{item.category}</td>
-              <td className="px-6 py-4">{item.price}</td>
+
+              <td className="px-6 py-4">{item.descricao}</td>
+              <td className="px-6 py-4">{item.id_tipo_bem}</td>
+              <td className="px-6 py-4">{item.created_by}</td>
+              <td className="px-6 py-4">{item.status_bem}</td>
               <td className="px-6 py-4">
-                <a
-                  href="#"
+                {item.permite_reserva ? "true" : "false"}
+              </td>
+              <td className="px-6 py-4">{item.created_at}</td>
+              <td className="px-6 py-4">
+                <button
+                  onClick={() => onEdit(item)}
                   className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                 >
                   Edit
-                </a>
+                </button>
               </td>
             </tr>
           ))}

@@ -12,12 +12,13 @@ from rest_framework.generics import ListAPIView
 class BemCreateView(APIView):
     # Define que o usuário precisa estar autenticado para acessar esta view
     # permission_classes = [IsAuthenticated]
-    
+
     def post(self, request):
         serializer = BemSerializer(data=request.data)
 
         if serializer.is_valid():
-            bem = serializer.save(created_by=request.user)  # Atribuindo o usuário logado
+            # Atribuindo o usuário logado
+            bem = serializer.save(created_by=request.user)
             return Response(BemSerializer(bem).data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -26,12 +27,11 @@ class BemCreateView(APIView):
 class BemUpdateView(UpdateAPIView):
     queryset = Bem.objects.all()
     serializer_class = BemSerializer
-    permission_classes = [IsAuthenticated]  # Ensure the user is authenticated
+    # permission_classes = [IsAuthenticated]  # Ensure the user is authenticated
 
     def perform_update(self, serializer):
         # Optionally override this method if you need custom behavior on update
         serializer.save(updated_by=self.request.user)
-
 
 
 class BemListView(APIView):
