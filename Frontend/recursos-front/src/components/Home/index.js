@@ -9,8 +9,10 @@ const Home = () => {
   const [data, setData] = useState([]);
   const [selectedBem, setSelectedBem] = useState(null); // Bem selecionado para editar
   const [modalIsOpen, setModalIsOpen] = useState(false); // Estado do modal
+  const [tiposBem, setTiposBem] = useState([]); // State para armazenar os tipos de bens
 
   useEffect(() => {
+    // Fetch de bens
     axios
       .get("http://127.0.0.1:8000/bem/listar/")
       .then((response) => {
@@ -18,6 +20,15 @@ const Home = () => {
       })
       .catch((error) => {
         console.error("There was an error fetching the data!", error);
+      });
+    // Fetch de tipos de bens
+    axios
+      .get("http://127.0.0.1:8000/bem/tipo_bem/listar/") // Substitua pelo endpoint correto
+      .then((response) => {
+        setTiposBem(response.data);
+      })
+      .catch((error) => {
+        console.error("There was an error fetching tipos de bem!", error);
       });
   }, []);
 
@@ -87,6 +98,26 @@ const Home = () => {
                   className="text-black mt-1 block w-full p-2 border border-gray-700 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                 />
               </div>
+
+              <div>
+                <label className="block text-sm font-medium">Tipo do bem</label>
+                <select
+                  name="id_tipo_bem"
+                  value={selectedBem.id_tipo_bem}
+                  onChange={handleInputChange}
+                  className="text-black mt-1 block w-full p-2 border border-gray-700 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                >
+                  <option value="" disabled>
+                    Selecione um tipo
+                  </option>
+                  {tiposBem.map((tipo) => (
+                    <option key={tipo.id_tipo_bem} value={tipo.id_tipo_bem}>
+                      {tipo.tipo_bem}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
               <div>
                 <label className="block text-sm font-medium">Status:</label>
                 <select
@@ -99,6 +130,7 @@ const Home = () => {
                   <option value="R">Retirado</option>
                 </select>
               </div>
+
               <div>
                 <label className="block text-sm font-medium">
                   Permite reserva?
@@ -113,6 +145,7 @@ const Home = () => {
                   <option value="false">Não</option>
                 </select>
               </div>
+
               <div className="flex gap-4">
                 <button
                   type="submit"

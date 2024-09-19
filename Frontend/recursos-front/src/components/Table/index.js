@@ -49,13 +49,15 @@ const Table = ({ data, onEdit }) => {
               </th>
 
               <td className="px-6 py-4">{item.descricao}</td>
-              <td className="px-6 py-4">{item.id_tipo_bem}</td>
+              <td className="px-6 py-4">{item.id_tipo_bem_nome}</td>
               <td className="px-6 py-4">{item.created_by}</td>
-              <td className="px-6 py-4">{item.status_bem}</td>
               <td className="px-6 py-4">
-                {item.permite_reserva ? "true" : "false"}
+                {item.status_bem === "R" ? "Retirado" : "Disponível"}
               </td>
-              <td className="px-6 py-4">{item.created_at}</td>
+              <td className="px-6 py-4">
+                {item.permite_reserva ? "Sim" : "Não"}
+              </td>
+              <td className="px-6 py-4">{item.created_at.slice(0, 10)}</td>
               <td className="px-6 py-4">
                 <button
                   onClick={() => onEdit(item)}

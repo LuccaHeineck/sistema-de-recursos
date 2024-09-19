@@ -1,12 +1,11 @@
 from django.shortcuts import render
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.generics import UpdateAPIView
-from .models import Bem
-from .serializers import BemSerializer
+from .models import Bem, TipoBem
+from .serializers import BemSerializer, TipoBemSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.generics import ListAPIView
 
 
 class BemCreateView(APIView):
@@ -38,4 +37,11 @@ class BemListView(APIView):
     def get(self, request):
         bens = Bem.objects.all()
         serializer = BemSerializer(bens, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class TipoBemListView(APIView):
+    def get(self, request):
+        tipos_bem = TipoBem.objects.all()
+        serializer = TipoBemSerializer(tipos_bem, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
