@@ -82,11 +82,14 @@ const Home = () => {
         onRequestClose={closeModal}
         contentLabel="Editar Bem"
         className="fixed inset-0 flex items-center justify-center p-4"
-        overlayClassName="fixed inset-0 bg-black bg-opacity-50"
+        overlayClassName="fixed inset-0 bg-black bg-opacity-60 backdrop-blur-xs"
       >
         {selectedBem && (
-          <div className="bg-gray-800 text-white p-8 rounded-lg max-w-md mx-auto">
-            <h2 className="text-xl font-semibold mb-4">Editar Bem</h2>
+          <div
+            className="bg-customGrey text-white p-8 rounded-lg mx-auto font-poppins" // Aplica a fonte ao conteúdo do modal
+            style={{ maxWidth: "500px", width: "100%" }}
+          >
+            <h2 className="text-2xl font-semibold mb-7">Editar Bem</h2>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium">Descrição:</label>
@@ -95,7 +98,7 @@ const Home = () => {
                   name="descricao"
                   value={selectedBem.descricao}
                   onChange={handleInputChange}
-                  className="text-black mt-1 block w-full p-2 border border-gray-700 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  className="bg-customGrey text-white mt-1 block w-full p-2 border border-customLightGrey rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                 />
               </div>
 
@@ -105,7 +108,7 @@ const Home = () => {
                   name="id_tipo_bem"
                   value={selectedBem.id_tipo_bem}
                   onChange={handleInputChange}
-                  className="text-black mt-1 block w-full p-2 border border-gray-700 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  className="bg-customGrey text-white mt-1 block w-full p-2 border border-customLightGrey rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                 >
                   <option value="" disabled>
                     Selecione um tipo
@@ -118,45 +121,47 @@ const Home = () => {
                 </select>
               </div>
 
-              <div>
-                <label className="block text-sm font-medium">Status:</label>
-                <select
-                  name="status_bem"
-                  value={selectedBem.status_bem}
-                  onChange={handleInputChange}
-                  className="text-black mt-1 block w-full p-2 border border-gray-700 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                >
-                  <option value="D">Disponível</option>
-                  <option value="R">Retirado</option>
-                </select>
-              </div>
+              <div className="flex space-x-4">
+                <div className="w-1/2">
+                  <label className="block text-sm font-medium">Status:</label>
+                  <select
+                    name="status_bem"
+                    value={selectedBem.status_bem}
+                    onChange={handleInputChange}
+                    className="bg-customGrey text-white mt-1 block w-full p-2 border border-customLightGrey gray-700 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  >
+                    <option value="D">Disponível</option>
+                    <option value="R">Retirado</option>
+                  </select>
+                </div>
 
-              <div>
-                <label className="block text-sm font-medium">
-                  Permite reserva?
-                </label>
-                <select
-                  name="permite_reserva"
-                  value={selectedBem.permite_reserva}
-                  onChange={handleInputChange}
-                  className="text-black mt-1 block w-full p-2 border border-gray-700 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                >
-                  <option value="true">Sim</option>
-                  <option value="false">Não</option>
-                </select>
+                <div className="w-1/2">
+                  <label className="block text-sm font-medium">
+                    Permite reserva?
+                  </label>
+                  <select
+                    name="permite_reserva"
+                    value={selectedBem.permite_reserva}
+                    onChange={handleInputChange}
+                    className="bg-customGrey mb-10 text-white mt-1 block w-full p-2 border border-customLightGrey rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  >
+                    <option value="true">Sim</option>
+                    <option value="false">Não</option>
+                  </select>
+                </div>
               </div>
 
               <div className="flex gap-4">
                 <button
                   type="submit"
-                  className="inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                  className="inline-flex items-center px-6 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-customBlue hover:bg-blue-900"
                 >
                   Salvar
                 </button>
                 <button
                   type="button"
                   onClick={closeModal}
-                  className="inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+                  className="inline-flex items-center px-6 py-2 border text-sm font-medium rounded-md shadow-sm text-white bg-customGrey hover:bg-customGreyLight border-customBlue"
                 >
                   Cancelar
                 </button>

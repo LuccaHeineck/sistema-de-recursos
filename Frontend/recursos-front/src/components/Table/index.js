@@ -4,7 +4,7 @@ const Table = ({ data, onEdit }) => {
   return (
     <div className="relative overflow-x-auto shadow-md sm:rounded-md">
       <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-        <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+        <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-customLightBlue dark:text-customWhite1">
           <tr>
             <th scope="col" className="px-6 py-3">
               ID
@@ -38,9 +38,9 @@ const Table = ({ data, onEdit }) => {
               key={index}
               className={`${
                 index % 2 === 0
-                  ? "odd:bg-white odd:dark:bg-gray-900"
-                  : "even:bg-gray-50 even:dark:bg-gray-800"
-              } border-b dark:border-gray-700`}
+                  ? "odd:bg-white odd:dark:bg-customGreyLight"
+                  : "even:bg-gray-50 even:dark:bg-customGrey"
+              } border-b dark:border-customGreyLight`}
             >
               <th
                 scope="row"
@@ -62,7 +62,7 @@ const Table = ({ data, onEdit }) => {
               <td className="px-6 py-4">
                 <button
                   onClick={() => onEdit(item)}
-                  className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                  className="font-medium text-blue-600 dark:text-customLightorange hover:underline"
                 >
                   <PencilIcon className="h-5 w-5" />
                 </button>

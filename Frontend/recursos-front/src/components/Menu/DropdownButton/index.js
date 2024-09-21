@@ -23,7 +23,7 @@ const DropdownButton = ({ label, Icon, options }) => {
         onClick={toggleDropdown}
         className={`w-full flex items-center justify-between p-3 text-lg text-customLightGrey ${
           isOpen
-            ? "rounded-tr-lg rounded-tl-lg bg-slate-950"
+            ? "rounded-tr-lg rounded-tl-lg bg-customBlue"
             : "rounded-lg hover:bg-customGrey"
         }`}
       >
@@ -46,7 +46,7 @@ const DropdownButton = ({ label, Icon, options }) => {
             <a
               key={path}
               href={path}
-              className="flex pl-5 items-center space-x-4 p-3 text-lg text-customLightGrey rounded-lg hover:bg-slate-900"
+              className="flex pl-5 items-center space-x-4 p-3 text-lg text-customLightGrey rounded-lg hover:bg-customLightBlue"
             >
               {OptionIcon && <OptionIcon className="w-5 h-5" />}
               <span>{label}</span>
