@@ -2,17 +2,19 @@ import React, { useState, useEffect } from "react";
 import Table from "../Table";
 import axios from "axios";
 import Modal from "react-modal";
+import { CSSTransition } from "react-transition-group";
+import "./Home.css"; // Import your CSS file for animations
 
 Modal.setAppElement("#root");
 
 const Home = () => {
   const [data, setData] = useState([]);
-  const [selectedBem, setSelectedBem] = useState(null); // Bem selecionado para editar
-  const [modalIsOpen, setModalIsOpen] = useState(false); // Estado do modal
-  const [tiposBem, setTiposBem] = useState([]); // State para armazenar os tipos de bens
+  const [selectedBem, setSelectedBem] = useState(null);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [tiposBem, setTiposBem] = useState([]);
+  const [showSuccess, setShowSuccess] = useState(false);
 
   useEffect(() => {
-    // Fetch de bens
     axios
       .get("http://127.0.0.1:8000/bem/listar/")
       .then((response) => {
@@ -21,9 +23,8 @@ const Home = () => {
       .catch((error) => {
         console.error("There was an error fetching the data!", error);
       });
-    // Fetch de tipos de bens
     axios
-      .get("http://127.0.0.1:8000/bem/tipo_bem/listar/") // Substitua pelo endpoint correto
+      .get("http://127.0.0.1:8000/bem/tipo_bem/listar/")
       .then((response) => {
         setTiposBem(response.data);
       })
@@ -32,25 +33,21 @@ const Home = () => {
       });
   }, []);
 
-  // Função para abrir o modal de edição
   const openModal = (bem) => {
     setSelectedBem(bem);
     setModalIsOpen(true);
   };
 
-  // Função para fechar o modal
   const closeModal = () => {
     setModalIsOpen(false);
     setSelectedBem(null);
   };
 
-  // Função para lidar com as mudanças no formulário
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setSelectedBem({ ...selectedBem, [name]: value });
   };
 
-  // Função para enviar os dados atualizados
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
@@ -65,7 +62,11 @@ const Home = () => {
           )
         );
 
-        closeModal(); // Fechar o modal após a edição
+        closeModal();
+        setShowSuccess(true);
+        setTimeout(() => {
+          setShowSuccess(false);
+        }, 3000);
       })
       .catch((error) => {
         console.error("Erro ao atualizar o bem!", error);
@@ -73,10 +74,10 @@ const Home = () => {
   };
 
   return (
-    <div className="p-4  min-h-screen">
+    <div className="p-4 min-h-screen">
       <h1 className="text-2xl font-semibold mb-4">Lista de Bens</h1>
-      <Table data={data} onEdit={openModal} />{" "}
-      {/* Passa a função de editar para a tabela */}
+
+      <Table data={data} onEdit={openModal} />
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
@@ -86,7 +87,7 @@ const Home = () => {
       >
         {selectedBem && (
           <div
-            className="bg-customGrey border border-customGreyLight text-white p-8 rounded-lg mx-auto font-poppins" // Aplica a fonte ao conteúdo do modal
+            className="bg-customGrey border border-customGreyLight text-white p-8 rounded-lg mx-auto font-poppins"
             style={{ maxWidth: "500px", width: "100%" }}
           >
             <h2 className="text-2xl font-semibold mb-7">Editar Bem</h2>
@@ -128,7 +129,7 @@ const Home = () => {
                     name="status_bem"
                     value={selectedBem.status_bem}
                     onChange={handleInputChange}
-                    className="bg-customGrey text-white mt-1 block w-full p-2 border border-customLightGrey gray-700 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                    className="bg-customGrey text-white mt-1 block w-full p-2 border border-customLightGrey rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                   >
                     <option value="D">Disponível</option>
                     <option value="R">Retirado</option>
@@ -143,7 +144,7 @@ const Home = () => {
                     name="permite_reserva"
                     value={selectedBem.permite_reserva}
                     onChange={handleInputChange}
-                    className="bg-customGrey mb-10 text-white mt-1 block w-full p-2 border border-customLightGrey rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                    className="bg-customGrey text-white mb-5 mt-1 block w-full p-2 border border-customLightGrey rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                   >
                     <option value="true">Sim</option>
                     <option value="false">Não</option>
@@ -170,6 +171,16 @@ const Home = () => {
           </div>
         )}
       </Modal>
+      <CSSTransition
+        in={showSuccess}
+        timeout={300}
+        classNames="success"
+        unmountOnExit
+      >
+        <div className="mt-4 p-4 bg-green-100 rounded-sm border-l-4 border-green-500 text-green-700">
+          <p>Dados salvos com sucesso!</p>
+        </div>
+      </CSSTransition>
     </div>
   );
 };
