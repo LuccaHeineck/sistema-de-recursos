@@ -46,7 +46,7 @@ const DropdownButton = ({ label, Icon, options }) => {
             <a
               key={path}
               href={path}
-              className="flex pl-5 items-center space-x-4 p-3 text-lg text-customLightGrey rounded-lg hover:bg-customLightBlue"
+              className="flex pl-5 items-center space-x-4 p-3 text-lg text-customLightGrey rounded-lg hover:bg-customBlue hover:bg-opacity-25"
             >
               {OptionIcon && <OptionIcon className="w-5 h-5" />}
               <span>{label}</span>

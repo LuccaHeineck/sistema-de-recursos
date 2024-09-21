@@ -86,7 +86,7 @@ const Home = () => {
       >
         {selectedBem && (
           <div
-            className="bg-customGrey text-white p-8 rounded-lg mx-auto font-poppins" // Aplica a fonte ao conteúdo do modal
+            className="bg-customGrey border border-customGreyLight text-white p-8 rounded-lg mx-auto font-poppins" // Aplica a fonte ao conteúdo do modal
             style={{ maxWidth: "500px", width: "100%" }}
           >
             <h2 className="text-2xl font-semibold mb-7">Editar Bem</h2>

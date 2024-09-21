@@ -17,10 +17,12 @@ module.exports = {
         customGreyDark: "#0e0c0d",
         customLightGrey: "#E8EAF6",
         customWhite1: "#D4D4D4",
-        customBlue: "#1C4EAA",
-        customLightBlue: "#111a2b",
-        customOrange: "#E36C14",
-        customLightorange: "#E89611",
+        customBlue: "#537EE4",
+        customDarkBlue: "#1E4FC2",
+        customLightBlue: "#83A3EC",
+        customYellow: "#FDE63A",
+        customLightYellow: "#FEED72",
+        customDarkYellow: "#F2D602",
       },
 
       backdropBlur: {
