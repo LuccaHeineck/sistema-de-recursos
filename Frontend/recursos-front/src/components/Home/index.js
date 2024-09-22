@@ -75,8 +75,18 @@ const Home = () => {
 
   return (
     <div className="p-4 min-h-screen">
-      <h1 className="text-2xl font-semibold mb-4">Lista de Bens</h1>
+      <CSSTransition
+        in={showSuccess}
+        timeout={300}
+        classNames="success"
+        unmountOnExit
+      >
+        <div className="fixed left-1/2 top-4 z-50 mb-4 p-4 bg-green-100 rounded-sm border-l-4 border-green-500 text-green-700">
+          <p>Dados salvos com sucesso!</p>
+        </div>
+      </CSSTransition>
 
+      <h1 className="text-2xl font-semibold mb-4">Lista de Bens</h1>
       <Table data={data} onEdit={openModal} />
       <Modal
         isOpen={modalIsOpen}
@@ -171,16 +181,6 @@ const Home = () => {
           </div>
         )}
       </Modal>
-      <CSSTransition
-        in={showSuccess}
-        timeout={300}
-        classNames="success"
-        unmountOnExit
-      >
-        <div className="mt-4 p-4 bg-green-100 rounded-sm border-l-4 border-green-500 text-green-700">
-          <p>Dados salvos com sucesso!</p>
-        </div>
-      </CSSTransition>
     </div>
   );
 };
