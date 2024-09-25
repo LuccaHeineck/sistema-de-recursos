@@ -12,12 +12,14 @@ import {
   BriefcaseIcon,
   ArrowLeftStartOnRectangleIcon,
   CalendarDaysIcon,
+  SwatchIcon,
 } from "@heroicons/react/24/outline";
 import DropdownButton from "./DropdownButton";
 
 const Menu = () => {
   const optionsCadastro = {
     bem: { path: "/bem", icon: ComputerDesktopIcon, label: "Bem" },
+    tipo_bem: { path: "/tipobem", icon: SwatchIcon, label: "Tipo Bem" },
     kit: { path: "/kit", icon: InboxStackIcon, label: "Kit" },
   };
 

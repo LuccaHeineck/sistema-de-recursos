@@ -4,13 +4,15 @@ import axios from "axios";
 import Modal from "react-modal";
 import { CSSTransition } from "react-transition-group";
 import "./Home.css"; // Import your CSS file for animations
+import ConfirmarButton from "../ConfirmarButton";
 
 Modal.setAppElement("#root");
 
 const Home = () => {
   const [data, setData] = useState([]);
   const [selectedBem, setSelectedBem] = useState(null);
-  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [editModalIsOpen, setEditModalIsOpen] = useState(false);
+  const [confirmationModalIsOpen, setConfirmationModalIsOpen] = useState(false);
   const [tiposBem, setTiposBem] = useState([]);
   const [showSuccess, setShowSuccess] = useState(false);
 
@@ -33,13 +35,23 @@ const Home = () => {
       });
   }, []);
 
-  const openModal = (bem) => {
+  const openEditModal = (bem) => {
     setSelectedBem(bem);
-    setModalIsOpen(true);
+    setEditModalIsOpen(true);
   };
 
-  const closeModal = () => {
-    setModalIsOpen(false);
+  const closeEditModal = () => {
+    setEditModalIsOpen(false);
+    setSelectedBem(null);
+  };
+
+  const openConfirmationModal = (bem) => {
+    setSelectedBem(bem);
+    setConfirmationModalIsOpen(true);
+  };
+
+  const closeConfirmationModal = () => {
+    setConfirmationModalIsOpen(false);
     setSelectedBem(null);
   };
 
@@ -62,7 +74,7 @@ const Home = () => {
           )
         );
 
-        closeModal();
+        closeEditModal();
         setShowSuccess(true);
         setTimeout(() => {
           setShowSuccess(false);
@@ -70,6 +82,22 @@ const Home = () => {
       })
       .catch((error) => {
         console.error("Erro ao atualizar o bem!", error);
+      });
+  };
+
+  const handleDeleteConfirm = () => {
+    axios
+      .delete(`http://127.0.0.1:8000/bem/delete/${selectedBem.id_bem}/`)
+      .then(() => {
+        setData(data.filter((bem) => bem.id_bem !== selectedBem.id_bem));
+        closeConfirmationModal();
+        setShowSuccess(true);
+        setTimeout(() => {
+          setShowSuccess(false);
+        }, 3000);
+      })
+      .catch((error) => {
+        console.error("Erro ao deletar o bem!", error);
       });
   };
 
@@ -87,10 +115,14 @@ const Home = () => {
       </CSSTransition>
 
       <h1 className="text-2xl font-semibold mb-4">Lista de Bens</h1>
-      <Table data={data} onEdit={openModal} />
+      <Table
+        data={data}
+        onEdit={openEditModal}
+        onDelete={openConfirmationModal}
+      />
       <Modal
-        isOpen={modalIsOpen}
-        onRequestClose={closeModal}
+        isOpen={editModalIsOpen}
+        onRequestClose={closeEditModal}
         contentLabel="Editar Bem"
         className="fixed inset-0 flex items-center justify-center p-4"
         overlayClassName="fixed inset-0 bg-black bg-opacity-60 backdrop-blur-xs"
@@ -171,7 +203,7 @@ const Home = () => {
                 </button>
                 <button
                   type="button"
-                  onClick={closeModal}
+                  onClick={closeEditModal}
                   className="inline-flex items-center px-6 py-2 border text-sm font-medium rounded-md shadow-sm text-white bg-customGrey hover:bg-customGreyLight border-customBlue"
                 >
                   Cancelar
@@ -181,6 +213,14 @@ const Home = () => {
           </div>
         )}
       </Modal>
+
+      <ConfirmarButton
+        isOpen={confirmationModalIsOpen}
+        onRequestClose={closeConfirmationModal}
+        onConfirm={handleDeleteConfirm}
+        title="Confirmar Deleção"
+        message="Você tem certeza que deseja deletar este bem?"
+      />
     </div>
   );
 };

@@ -1,6 +1,6 @@
-import { PencilIcon } from "@heroicons/react/24/outline";
+import { PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
 
-const Table = ({ data, onEdit }) => {
+const Table = ({ data, onEdit, onDelete }) => {
   return (
     <div className="relative overflow-x-auto shadow-md sm:rounded-md">
       <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -65,6 +65,12 @@ const Table = ({ data, onEdit }) => {
                   className="font-medium text-blue-600 dark:text-customYellow hover:underline"
                 >
                   <PencilIcon className="h-5 w-5" />
+                </button>
+                <button
+                  onClick={() => onDelete(item)}
+                  className="font-medium text-blue-600 dark:text-red-400 hover:underline ml-2"
+                >
+                  <TrashIcon className="h-5 w-5" />
                 </button>
               </td>
             </tr>
