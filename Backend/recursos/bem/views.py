@@ -6,6 +6,7 @@ from .serializers import BemSerializer, TipoBemSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.generics import DestroyAPIView
 
 
 class BemCreateView(APIView):
@@ -32,6 +33,20 @@ class BemUpdateView(UpdateAPIView):
         # Optionally override this method if you need custom behavior on update
         serializer.save(updated_by=self.request.user)
 
+class BemDeleteView(DestroyAPIView):
+    queryset = Bem.objects.all()
+    serializer_class = BemSerializer
+    # permission_classes = [IsAuthenticated]  # Garante que o usuário está autenticado
+
+    def delete(self, request, *args, **kwargs):
+        instance = self.get_object()
+        self.perform_destroy(instance)
+        return Response({"detail": "Bem excluído com sucesso."}, status=status.HTTP_204_NO_CONTENT)
+
+    def perform_destroy(self, instance):
+        # Se você precisar de lógica personalizada na deleção, modifique aqui
+        instance.delete()
+
 
 class BemListView(APIView):
     def get(self, request):
@@ -45,3 +60,5 @@ class TipoBemListView(APIView):
         tipos_bem = TipoBem.objects.all()
         serializer = TipoBemSerializer(tipos_bem, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
