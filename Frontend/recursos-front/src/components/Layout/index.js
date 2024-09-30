@@ -3,7 +3,7 @@ import Header from "../Header";
 
 const Layout = ({ children }) => {
   return (
-    <div className="font-poppins flex h-screen">
+    <div className="bg-customGrey font-poppins flex h-screen">
       <Menu />
       <div className="flex-1 flex flex-col ml-72">
         {" "}
