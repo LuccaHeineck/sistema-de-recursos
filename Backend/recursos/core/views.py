@@ -46,7 +46,7 @@ class LoginView(APIView):
 class UsuarioLogadoView(APIView):
     def get(self, request):
         print(f"Usuário autenticado: {request.user}")  # Verifique se o usuário está autenticado
-        if request.user.is_authenticated:
+        if request.user != None:
             return Response({'username': request.user.username}, status=status.HTTP_200_OK)
         else:
             return Response({'error': 'Usuário não autenticado'}, status=status.HTTP_401_UNAUTHORIZED)
