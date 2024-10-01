@@ -14,8 +14,10 @@ const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(
     !!localStorage.getItem("accessToken")
   );
+  const [message, setMessage] = useState(""); // Store username here
 
-  // Protected Route to check authentication
+  console.log(message); // Debugging: Log the username to the console
+
   const ProtectedRoute = ({ element }) => {
     return isAuthenticated ? element : <Navigate to="/login" />;
   };
@@ -23,31 +25,41 @@ const App = () => {
   return (
     <Router>
       <Routes>
-        {/* Rota para login sem layout */}
         <Route
           path="/login"
-          element={<LoginPage setIsAuthenticated={setIsAuthenticated} />}
+          element={
+            <LoginPage
+              setIsAuthenticated={setIsAuthenticated}
+              setMessage={setMessage} // Pass setMessage to LoginPage
+            />
+          }
         />
 
-        {/* Rota com Layout para várias páginas */}
         <Route
           element={
             <ProtectedRoute
               element={
-                <Layout>
-                  <Outlet />{" "}
-                  {/* Outlet permite que as rotas "filhas" sejam renderizadas aqui */}
+                <Layout username={message}>
+                  {" "}
+                  {/* Pass username to Layout */}
+                  <Outlet />
                 </Layout>
               }
             />
           }
         >
-          {/* Rotas protegidas dentro do Layout */}
-          <Route path="/bem" element={<Home />} />
+          <Route
+            path="/bem"
+            element={
+              <div>
+                <Home /> {/* You can also pass username here if needed */}
+              </div>
+            }
+          />
         </Route>
 
-        {/* Redireciona para login se o caminho não for conhecido */}
         <Route path="*" element={<Navigate to="/login" />} />
+        <Route path="/bem/cadastrar" element={<BemCreateForm />} />
       </Routes>
     </Router>
   );
