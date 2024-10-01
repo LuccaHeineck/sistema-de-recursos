@@ -2,32 +2,32 @@ import { PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
 
 const Table = ({ data, onEdit, onDelete }) => {
   return (
-    <div className="relative overflow-x-auto shadow-md sm:rounded-md">
-      <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+    <div className="relative overflow-x-auto shadow-md sm:rounded-md ">
+      <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 ">
         <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-customBlue dark:text-customWhite1">
           <tr>
-            <th scope="col" className="px-6 py-3">
+            <th scope="col" className="text-center px-6 py-3">
               ID
             </th>
-            <th scope="col" className="px-6 py-3">
+            <th scope="col" className="text-center px-6 py-3">
               Descrição
             </th>
-            <th scope="col" className="px-6 py-3">
+            <th scope="col" className="text-center px-6 py-3">
               Tipo
             </th>
-            <th scope="col" className="px-6 py-3">
+            <th scope="col" className="text-center px-6 py-3">
               Criado por
             </th>
-            <th scope="col" className="px-6 py-3">
+            <th scope="col" className="text-center px-6 py-3">
               Status
             </th>
-            <th scope="col" className="px-6 py-3">
+            <th scope="col" className="text-center px-6 py-3">
               Permite reserva
             </th>
-            <th scope="col" className="px-6 py-3">
+            <th scope="col" className="text-center px-6 py-3">
               Criado em
             </th>
-            <th scope="col" className="px-6 py-3">
+            <th scope="col" className="text-center px-6 py-3">
               Ações
             </th>
           </tr>
@@ -49,7 +49,7 @@ const Table = ({ data, onEdit, onDelete }) => {
                 {item.id_bem}
               </th>
 
-              <td className="px-6 py-4">{item.descricao}</td>
+              <td className="break-all px-6 py-4">{item.descricao}</td>
               <td className="px-6 py-4">{item.id_tipo_bem_nome}</td>
               <td className="px-6 py-4">{item.created_by}</td>
               <td className="px-6 py-4">
@@ -58,8 +58,8 @@ const Table = ({ data, onEdit, onDelete }) => {
               <td className="px-6 py-4">
                 {item.permite_reserva ? "Sim" : "Não"}
               </td>
-              <td className="px-6 py-4">{item.created_at.slice(0, 10)}</td>
-              <td className="px-6 py-4">
+              <td className="pl-2 pr-2 py-2">{item.created_at.slice(0, 10)}</td>
+              <td className="px-4 py-4 text-center ">
                 <button
                   onClick={() => onEdit(item)}
                   className="font-medium text-blue-600 dark:text-customYellow hover:underline"
