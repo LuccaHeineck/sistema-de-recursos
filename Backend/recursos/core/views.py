@@ -1,52 +1,41 @@
-from django.shortcuts import render
+# accounts/views.py
+
 from django.contrib.auth import authenticate
-from rest_framework.decorators import api_view
+from rest_framework import generics, permissions, status
 from rest_framework.response import Response
-from rest_framework.views import APIView
-from rest_framework import status
+from rest_framework_simplejwt.tokens import RefreshToken
+from .serializers import UserSerializer
+from django.contrib.auth.models import User 
 
+class RegisterView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
 
-class Hello_world(APIView):
-    def get(self, request):
-        return Response({'message': 'PIONMTO, world!'})
+class LoginView(generics.GenericAPIView):
+    serializer_class = UserSerializer
 
     def post(self, request):
-        # Supondo que os dados esperados sejam enviados no corpo da requisição (request.data)
-        data = request.data
-
-        if 'name' in data:
-            message = f'Hello, {data["name"]}!'
-            return Response({'message': message}, status=status.HTTP_200_OK)
-        else:
-            return Response({'error': 'No name provided'}, status=status.HTTP_400_BAD_REQUEST)
-
-
-class LoginView(APIView):
-    def post(self, request):
-        # Obtendo os dados do corpo da requisição da tabela auth_user
-        data = request.data
-        username = data.get('username')
-        password = data.get('password')
-
-        # Validando se os dados foram fornecidos
-        if not username or not password:
-            return Response({'error': 'Preencha todos os campos'}, status=status.HTTP_400_BAD_REQUEST)
-
-        # Autenticando o usuário
+        username = request.data.get('username')
+        password = request.data.get('password')
         user = authenticate(username=username, password=password)
+        if user:
+            refresh = RefreshToken.for_user(user)
+            return Response({
+                'refresh': str(refresh),
+                'access': str(refresh.access_token),
+            })
+        return Response({"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
 
-        if user is not None:
-            # Se as credenciais estão corretas, retorna uma mensagem de sucesso
-            return Response({'message': f'Bem-vindo, {user.username}!'}, status=status.HTTP_200_OK)
-        else:
-            # Se as credenciais estão incorretas
-            return Response({'error': 'Credenciais inválidas'}, status=status.HTTP_401_UNAUTHORIZED)
+class UserView(generics.RetrieveAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = UserSerializer
 
+    def get_object(self):
+        return self.request.user
 
-class UsuarioLogadoView(APIView):
-    def get(self, request):
-        print(f"Usuário autenticado: {request.user}")  # Verifique se o usuário está autenticado
-        if request.user != None:
-            return Response({'username': request.user.username}, status=status.HTTP_200_OK)
-        else:
-            return Response({'error': 'Usuário não autenticado'}, status=status.HTTP_401_UNAUTHORIZED)
+class LogoutView(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request):
+        # Blacklist token or just return a message
+        return Response({"message": "Logged out"}, status=status.HTTP_205_RESET_CONTENT)
