@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -5,61 +6,60 @@ import {
   Navigate,
   Outlet,
 } from "react-router-dom";
-import { useState } from "react";
-import Layout from "./components/Layout";
-import Home from "./components/Home";
-import LoginPage from "./components/LoginPage";
+import Login from "./components/Login";
+import Layout from "./components/Layout"; // Assuming Layout is in components folder
+import Home from "./components/Home"; // Assuming Home is in components folder
 
 const App = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(
-    !!localStorage.getItem("accessToken")
-  );
-  const [message, setMessage] = useState(""); // Store username here
+  const [token, setToken] = useState(localStorage.getItem("token"));
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
 
-  console.log(message); // Debugging: Log the username to the console
-
-  const ProtectedRoute = ({ element }) => {
-    return isAuthenticated ? element : <Navigate to="/login" />;
+  // Function to set user and token after login
+  const handleSetUser = (newToken, newUser) => {
+    setToken(newToken);
+    setUser(newUser);
+    localStorage.setItem("token", newToken);
+    localStorage.setItem("user", JSON.stringify(newUser));
   };
+
+  useEffect(() => {
+    // Check localStorage for token and user when the component mounts
+    const savedToken = localStorage.getItem("token");
+    const savedUser = JSON.parse(localStorage.getItem("user"));
+
+    if (savedToken && savedUser) {
+      setToken(savedToken);
+      setUser(savedUser);
+    }
+  }, []);
 
   return (
     <Router>
       <Routes>
-        <Route
-          path="/login"
-          element={
-            <LoginPage
-              setIsAuthenticated={setIsAuthenticated}
-              setMessage={setMessage} // Pass setMessage to LoginPage
-            />
-          }
-        />
+        <Route path="/login" element={<Login setUser={handleSetUser} />} />
 
         <Route
           element={
-            <ProtectedRoute
-              element={
-                <Layout username={message}>
-                  {" "}
-                  {/* Pass username to Layout */}
-                  <Outlet />
-                </Layout>
-              }
-            />
+            <Layout>
+              <Outlet />
+            </Layout>
           }
         >
           <Route
             path="/bem"
             element={
-              <div>
-                <Home /> {/* You can also pass username here if needed */}
-              </div>
+              token && user ? (
+                <div>
+                  <Home />
+                </div>
+              ) : (
+                <Navigate to="/login" />
+              )
             }
           />
         </Route>
-
+        {/* Redirect to login for any unknown paths */}
         <Route path="*" element={<Navigate to="/login" />} />
-        <Route path="/bem/cadastrar" element={<BemCreateForm />} />
       </Routes>
     </Router>
   );
