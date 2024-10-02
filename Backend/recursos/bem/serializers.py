@@ -15,13 +15,19 @@ class BemSerializer(serializers.ModelSerializer):
     )
     id_tipo_bem_nome = serializers.SerializerMethodField()
 
-    created_by = serializers.CharField(source="created_by.username")
+    created_by = serializers.CharField(source="created_by.username", read_only=True)
 
     class Meta:
         model = Bem
         fields = ['id_bem', 'descricao', 'permite_reserva', 'status_bem', "id_tipo_bem", 'id_tipo_bem_nome',
-                  'created_by', 'created_at']  # Inclua id_tipo_bem_nome nos campos
+                  'created_by', 'created_at']
         read_only_fields = ("id_bem", 'created_by', 'created_at')
+
+    def create(self, validated_data):
+        request = self.context.get('request', None)
+        if request and hasattr(request, 'user'):
+            validated_data['created_by'] = request.user
+        return Bem.objects.create(**validated_data)
 
     def get_id_tipo_bem_nome(self, obj):
         return obj.id_tipo_bem.tipo_bem if obj.id_tipo_bem else None

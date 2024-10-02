@@ -11,14 +11,15 @@ from rest_framework.generics import DestroyAPIView
 
 class BemCreateView(APIView):
     # Define que o usuário precisa estar autenticado para acessar esta view
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
-        serializer = BemSerializer(data=request.data)
+        # Passa o contexto do request para o serializer
+
+        serializer = BemSerializer(data=request.data, context={'request': request})
 
         if serializer.is_valid():
-            # Atribuindo o usuário logado
-            bem = serializer.save(created_by=request.user)
+            bem = serializer.save()
             return Response(BemSerializer(bem).data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
