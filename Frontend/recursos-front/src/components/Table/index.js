@@ -44,22 +44,24 @@ const Table = ({ data, onEdit, onDelete }) => {
             >
               <th
                 scope="row"
-                className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                className="text-center px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
               >
                 {item.id_bem}
               </th>
 
               <td className="break-all px-6 py-4">{item.descricao}</td>
-              <td className="px-6 py-4">{item.id_tipo_bem_nome}</td>
-              <td className="px-6 py-4">{item.created_by}</td>
-              <td className="px-6 py-4">
+              <td className="text-center px-6 py-4">{item.id_tipo_bem_nome}</td>
+              <td className="text-center px-6 py-4">{item.created_by}</td>
+              <td className="text-center px-6 py-4">
                 {item.status_bem === "R" ? "Retirado" : "Disponível"}
               </td>
-              <td className="px-6 py-4">
+              <td className="text-center px-6 py-4">
                 {item.permite_reserva ? "Sim" : "Não"}
               </td>
-              <td className="pl-2 pr-2 py-2">{item.created_at.slice(0, 10)}</td>
-              <td className="px-4 py-4 text-center ">
+              <td className="text-center pl-2 pr-2 py-2">
+                {item.created_at.slice(0, 10)}
+              </td>
+              <td className="text-center px-4 py-4">
                 <button
                   onClick={() => onEdit(item)}
                   className="font-medium text-blue-600 dark:text-customYellow hover:underline"

@@ -59,6 +59,7 @@ const App = () => {
         </Route>
 
         <Route path="*" element={<Navigate to="/login" />} />
+        <Route path="/bem/cadastrar" element={<BemCreateForm />} />
       </Routes>
     </Router>
   );

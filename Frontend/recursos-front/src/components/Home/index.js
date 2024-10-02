@@ -5,6 +5,7 @@ import Modal from "react-modal";
 import { CSSTransition } from "react-transition-group";
 import "./Home.css"; // Import your CSS file for animations
 import ConfirmarButton from "../ConfirmarButton";
+import BemCreateForm from "./inserir";
 
 Modal.setAppElement("#root");
 
