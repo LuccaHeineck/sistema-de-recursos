@@ -15,6 +15,7 @@ import {
   SwatchIcon,
 } from "@heroicons/react/24/outline";
 import DropdownButton from "./DropdownButton";
+import LogoutButton from "./LogoutButton";
 
 const Menu = () => {
   const optionsCadastro = {
@@ -76,8 +77,7 @@ const Menu = () => {
       </ul>
 
       <div className="pt-4 list-none">
-        <MenuButton
-          to="/logout"
+        <LogoutButton
           label="Logout"
           Icon={ArrowLeftStartOnRectangleIcon}
           corIcon="text-red-600 mr-1"
