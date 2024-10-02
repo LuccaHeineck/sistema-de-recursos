@@ -60,7 +60,6 @@ const App = () => {
         </Route>
         {/* Redirect to login for any unknown paths */}
         <Route path="*" element={<Navigate to="/login" />} />
-        <Route path="/bem/cadastrar" element={<BemCreateForm />} />
       </Routes>
     </Router>
   );
