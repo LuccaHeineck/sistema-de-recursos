@@ -1,11 +1,11 @@
 # accounts/views.py
 
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, login
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 from .serializers import UserSerializer
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User 
 
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
@@ -19,6 +19,7 @@ class LoginView(generics.GenericAPIView):
         password = request.data.get('password')
         user = authenticate(username=username, password=password)
         if user:
+            login(request, user)
             refresh = RefreshToken.for_user(user)
             return Response({
                 'refresh': str(refresh),

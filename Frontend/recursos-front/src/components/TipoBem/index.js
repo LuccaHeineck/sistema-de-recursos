@@ -3,34 +3,26 @@ import Table from "../Table";
 import axios from "axios";
 import Modal from "react-modal";
 import { CSSTransition } from "react-transition-group";
-import "./Home.css"; // Import your CSS file for animations
+import "./TipoBem.css"; // Import your CSS file for animations
 import ConfirmarButton from "../ConfirmarButton";
-import BemCreateForm from "./BemCreateForm";
 import { Link } from "react-router-dom";
+import TipoBemTable from "./TipoBemTable";
 
 Modal.setAppElement("#root");
 
-const Home = () => {
+const TipoBem = () => {
   const [data, setData] = useState([]);
-  const [selectedBem, setSelectedBem] = useState(null);
   const [editModalIsOpen, setEditModalIsOpen] = useState(false);
+  const [selectedTipoBem, setSelectedTipoBem] = useState(null);
   const [confirmationModalIsOpen, setConfirmationModalIsOpen] = useState(false);
   const [tiposBem, setTiposBem] = useState([]);
   const [showSuccess, setShowSuccess] = useState(false);
 
   useEffect(() => {
     axios
-      .get("http://127.0.0.1:8000/bem/listar/")
-      .then((response) => {
-        setData(response.data);
-      })
-      .catch((error) => {
-        console.error("There was an error fetching the data!", error);
-      });
-    axios
       .get("http://127.0.0.1:8000/bem/tipo_bem/listar/")
       .then((response) => {
-        setTiposBem(response.data);
+        setData(response.data);
       })
       .catch((error) => {
         console.error("There was an error fetching tipos de bem!", error);
@@ -38,41 +30,43 @@ const Home = () => {
   }, []);
 
   const openEditModal = (bem) => {
-    setSelectedBem(bem);
+    setSelectedTipoBem(bem);
     setEditModalIsOpen(true);
   };
 
   const closeEditModal = () => {
     setEditModalIsOpen(false);
-    setSelectedBem(null);
+    setSelectedTipoBem(null);
   };
 
   const openConfirmationModal = (bem) => {
-    setSelectedBem(bem);
+    setSelectedTipoBem(bem);
     setConfirmationModalIsOpen(true);
   };
 
   const closeConfirmationModal = () => {
     setConfirmationModalIsOpen(false);
-    setSelectedBem(null);
+    setSelectedTipoBem(null);
   };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setSelectedBem({ ...selectedBem, [name]: value });
+    setSelectedTipoBem({ ...selectedTipoBem, [name]: value });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
       .put(
-        `http://127.0.0.1:8000/bem/update/${selectedBem.id_bem}/`,
-        selectedBem
+        `http://127.0.0.1:8000/bem/tipo_bem/atualizar/${selectedTipoBem.id_tipo_bem}/`,
+        selectedTipoBem
       )
       .then((response) => {
         setData(
-          data.map((bem) =>
-            bem.id_bem === selectedBem.id_bem ? response.data : bem
+          data.map((tipobem) =>
+            tipobem.id_tipo_bem === selectedTipoBem.id_tipo_bem
+              ? response.data
+              : tipobem
           )
         );
 
@@ -83,15 +77,21 @@ const Home = () => {
         }, 3000);
       })
       .catch((error) => {
-        console.error("Erro ao atualizar o bem!", error);
+        console.error("Erro ao atualizar o tipo de bem!", error);
       });
   };
 
   const handleDeleteConfirm = () => {
     axios
-      .delete(`http://127.0.0.1:8000/bem/delete/${selectedBem.id_bem}/`)
+      .delete(
+        `http://127.0.0.1:8000/bem/tipo_bem/deletar/${selectedTipoBem.id_tipo_bem}/`
+      )
       .then(() => {
-        setData(data.filter((bem) => bem.id_bem !== selectedBem.id_bem));
+        setData(
+          data.filter(
+            (tipobem) => tipobem.id_tipo_bem !== selectedTipoBem.id_tipo_bem
+          )
+        );
         closeConfirmationModal();
         setShowSuccess(true);
         setTimeout(() => {
@@ -99,7 +99,7 @@ const Home = () => {
         }, 3000);
       })
       .catch((error) => {
-        console.error("Erro ao deletar o bem!", error);
+        console.error("Erro ao deletar o tipo bem!", error);
       });
   };
 
@@ -117,16 +117,16 @@ const Home = () => {
       </CSSTransition>
 
       <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-semibold mb-4">Lista de Bens</h1>
+        <h1 className="text-2xl font-semibold mb-4">Lista de Tipos Bens</h1>
         <Link
-          to="/bem/inserir"
+          to="/tipobem/inserir"
           className="mb-6 border border-customYellow flex items-center space-x-2 p-3 px-7 text-lg rounded-lg hover:bg-customGreyLight text-customYellow"
         >
           <span className="pl-2">Criar novo</span>
         </Link>
       </div>
 
-      <Table
+      <TipoBemTable
         data={data}
         onEdit={openEditModal}
         onDelete={openConfirmationModal}
@@ -134,75 +134,27 @@ const Home = () => {
       <Modal
         isOpen={editModalIsOpen}
         onRequestClose={closeEditModal}
-        contentLabel="Editar Bem"
+        contentLabel="Editar Tipo Bem"
         className="fixed inset-0 flex items-center justify-center p-4"
         overlayClassName="fixed inset-0 bg-black bg-opacity-60 backdrop-blur-xs"
       >
-        {selectedBem && (
+        {selectedTipoBem && (
           <div
             className="bg-customGrey border border-customGreyLight text-white p-8 rounded-lg mx-auto font-poppins"
             style={{ maxWidth: "500px", width: "100%" }}
           >
-            <h2 className="text-2xl font-semibold mb-7">Editar Bem</h2>
+            <h2 className="text-2xl font-semibold mb-7">Editar Tipo Bem</h2>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium">Descrição:</label>
+                <label className="block text-sm font-medium">Tipo do bem</label>
                 <input
                   type="text"
-                  name="descricao"
-                  value={selectedBem.descricao}
+                  name="tipo_bem"
+                  value={selectedTipoBem.tipo_bem}
                   onChange={handleInputChange}
-                  className="bg-customGrey text-white mt-1 block w-full p-2 border border-customLightGrey rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  className="bg-customGrey mb-10 text-white mt-1 block w-full p-2 border border-customLightGrey rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  placeholder="Digite o tipo do bem"
                 />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium">Tipo do bem</label>
-                <select
-                  name="id_tipo_bem"
-                  value={selectedBem.id_tipo_bem}
-                  onChange={handleInputChange}
-                  className="bg-customGrey text-white mt-1 block w-full p-2 border border-customLightGrey rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                >
-                  <option value="" disabled>
-                    Selecione um tipo
-                  </option>
-                  {tiposBem.map((tipo) => (
-                    <option key={tipo.id_tipo_bem} value={tipo.id_tipo_bem}>
-                      {tipo.tipo_bem}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="flex space-x-4">
-                <div className="w-1/2">
-                  <label className="block text-sm font-medium">Status:</label>
-                  <select
-                    name="status_bem"
-                    value={selectedBem.status_bem}
-                    onChange={handleInputChange}
-                    className="bg-customGrey text-white mt-1 block w-full p-2 border border-customLightGrey rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                  >
-                    <option value="D">Disponível</option>
-                    <option value="R">Retirado</option>
-                  </select>
-                </div>
-
-                <div className="w-1/2">
-                  <label className="block text-sm font-medium">
-                    Permite reserva?
-                  </label>
-                  <select
-                    name="permite_reserva"
-                    value={selectedBem.permite_reserva}
-                    onChange={handleInputChange}
-                    className="bg-customGrey text-white mb-5 mt-1 block w-full p-2 border border-customLightGrey rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                  >
-                    <option value="true">Sim</option>
-                    <option value="false">Não</option>
-                  </select>
-                </div>
               </div>
 
               <div className="flex gap-4">
@@ -236,4 +188,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default TipoBem;

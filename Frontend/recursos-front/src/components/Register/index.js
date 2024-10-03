@@ -2,24 +2,21 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom"; // Import Link for navigation
 import AuthService from "../../AuthService"; // Import AuthService
 
-const Login = ({ setUser }) => {
+const Register = () => {
   const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      const response = await AuthService.login(username, password);
-      const token = response.access; // Access token from response
-      const user = { username }; // Assuming you want to store the username, adjust as needed
-
-      setUser(token, user); // Use handleSetUser to store token and user globally and in localStorage
-      setMessage("Login successful!");
-      navigate("/bem"); // Redirect to /bem after successful login
+      const response = await AuthService.register(username, email, password); // Use AuthService to register
+      setMessage("Registration successful! You can now log in.");
+      navigate("/login"); // Redirect to login after successful registration
     } catch (error) {
-      setMessage("Credenciais inválidas.");
+      setMessage("Registration failed! Please check your inputs.");
     }
   };
 
@@ -27,16 +24,24 @@ const Login = ({ setUser }) => {
     <div className="flex items-center justify-center h-screen bg-customGrey">
       <div className="w-1/2 md:w-1/3 lg:w-1/4">
         <form
-          onSubmit={handleLogin}
+          onSubmit={handleRegister}
           className="flex flex-col items-center bg-customGreyLight p-6 rounded-lg shadow-lg"
         >
-          <h2 className="text-2xl font-bold text-white mb-4">Login</h2>
+          <h2 className="text-2xl font-bold text-white mb-4">Register</h2>
 
           <input
             type="text"
             placeholder="Username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
+            className="w-full p-3 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             className="w-full p-3 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
 
@@ -52,16 +57,16 @@ const Login = ({ setUser }) => {
             type="submit"
             className="w-full p-3 bg-customBlue text-white font-semibold rounded-lg hover:bg-customDarkBlue transition duration-200"
           >
-            Login
+            Register
           </button>
 
           {message && <p className="mt-4 text-red-500">{message}</p>}
 
-          {/* Registration Link */}
+          {/* Redirect to Login Link */}
           <p className="mt-4 text-white">
-            Não possui uma conta?{" "}
-            <Link to="/register" className="text-blue-400 hover:underline">
-              Cadastre-se aqui!
+            Já possui uma conta?{" "}
+            <Link to="/login" className="text-blue-400 hover:underline">
+              Login aqui
             </Link>
           </p>
         </form>
@@ -70,4 +75,4 @@ const Login = ({ setUser }) => {
   );
 };
 
-export default Login;
+export default Register;

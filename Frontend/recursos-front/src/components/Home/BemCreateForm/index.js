@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate, Link } from "react-router-dom";
 
 const BemCreateForm = () => {
   const [data, setData] = useState([]);
@@ -14,6 +15,7 @@ const BemCreateForm = () => {
   const [tiposBem, setTiposBem] = useState([]);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
+  const navigate = useNavigate();
 
   // Função para buscar os tipos de bem
   useEffect(() => {
@@ -38,8 +40,17 @@ const BemCreateForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    // Obtendo o token de acesso do localStorage (ou outro lugar onde você o tenha armazenado)
+    const token = localStorage.getItem("token");
+
+    // Configurando o header da requisição para incluir o token JWT
     axios
-      .post("http://127.0.0.1:8000/bem/cadastrar/", formData)
+      .post("http://127.0.0.1:8000/bem/cadastrar/", formData, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Incluindo o token JWT no header
+          "Content-Type": "application/json",
+        },
+      })
       .then((response) => {
         // Exibir a mensagem de sucesso
         setSuccess(true);
@@ -48,8 +59,8 @@ const BemCreateForm = () => {
         setFormData({
           descricao: "",
           permite_reserva: false,
-          status_bem: "D", // Definindo como Disponível (ou ajustável)
-          id_tipo_bem: 2,
+          status_bem: "D",
+          id_tipo_bem: "",
         });
 
         // Ocultar a mensagem de sucesso após 3 segundos
@@ -64,8 +75,8 @@ const BemCreateForm = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10 p-6 bg-white shadow-md rounded-md">
-      <h2 className="text-black text-2xl font-bold mb-6">Cadastrar Bem</h2>
+    <div className="max-w-md mx-auto mt-10 p-6 bg-customGreyLight shadow-md rounded-md">
+      <h2 className="text-white text-2xl font-bold mb-6">Cadastrar Bem</h2>
       {error && <p className="text-red-500 mb-4">{error}</p>}
       {success && (
         <p className="text-green-500 mb-4">Bem cadastrado com sucesso!</p>
@@ -79,7 +90,7 @@ const BemCreateForm = () => {
             value={formData.descricao}
             onChange={handleChange}
             required
-            className="bg-customGrey text-white mt-1 block w-full p-2 border border-customLightGrey rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            className="bg-customGreyLight text-white mt-1 block w-full p-2 border border-customLightGrey rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
           />
         </div>
 
@@ -89,7 +100,7 @@ const BemCreateForm = () => {
             name="id_tipo_bem"
             value={formData.id_tipo_bem}
             onChange={handleChange}
-            className="bg-customGrey text-white mt-1 block w-full p-2 border border-customLightGrey rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            className="bg-customGreyLight text-white mt-1 block w-full p-2 border border-customLightGrey rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
           >
             <option value="" disabled>
               Selecione um tipo
@@ -109,7 +120,7 @@ const BemCreateForm = () => {
               name="status_bem"
               value={formData.status_bem}
               onChange={handleChange}
-              className="bg-customGrey text-white mt-1 block w-full p-2 border border-customLightGrey rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              className="bg-customGreyLight text-white mt-1 block w-full p-2 border border-customLightGrey rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             >
               <option value="D">Disponível</option>
               <option value="R">Retirado</option>
@@ -124,7 +135,7 @@ const BemCreateForm = () => {
               name="permite_reserva"
               value={formData.permite_reserva}
               onChange={handleChange}
-              className="bg-customGrey text-white mb-5 mt-1 block w-full p-2 border border-customLightGrey rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              className="bg-customGreyLight text-white mb-5 mt-1 block w-full p-2 border border-customLightGrey rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             >
               <option value="true">Sim</option>
               <option value="false">Não</option>
@@ -132,7 +143,15 @@ const BemCreateForm = () => {
           </div>
         </div>
 
-        <div className="flex gap-4">
+        <div className="flex justify-between">
+          <button>
+            <Link
+              to="/bem"
+              className="inline-flex items-center px-6 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm border-customYellow text-customYellow bg-customGreyLight hover:bg-customGrey"
+            >
+              <span>Voltar</span>
+            </Link>
+          </button>
           <button
             type="submit"
             className="inline-flex items-center px-6 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-customBlue hover:bg-blue-900"

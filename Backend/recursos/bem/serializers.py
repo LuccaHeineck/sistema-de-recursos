@@ -44,3 +44,8 @@ class BemSerializer(serializers.ModelSerializer):
 
         instance.save()
         return instance
+
+class TipoBemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TipoBem
+        fields = ["id_tipo_bem", "tipo_bem"]
