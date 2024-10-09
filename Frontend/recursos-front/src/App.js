@@ -8,9 +8,9 @@ import {
 } from "react-router-dom";
 import Login from "./components/Login";
 import Layout from "./components/Layout"; // Assuming Layout is in components folder
-import Home from "./components/Home"; // Assuming Home is in components folder
-import TipoBem from "./components/TipoBem"; // Assuming Home is in components folder
-import BemCreateForm from "./components/Home/BemCreateForm";
+import Bem from "./components/Bem"; // Assuming Bem is in components folder
+import TipoBem from "./components/TipoBem"; // Assuming Bem is in components folder
+import BemCreateForm from "./components/Bem/BemCreateForm";
 import Register from "./components/Register";
 import TipoBemCreateForm from "./components/TipoBem/TipoBemCreateForm";
 
@@ -55,7 +55,7 @@ const App = () => {
             element={
               token && user ? (
                 <div>
-                  <Home />
+                  <Bem />
                 </div>
               ) : (
                 <Navigate to="/login" />

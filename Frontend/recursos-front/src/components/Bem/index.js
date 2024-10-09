@@ -3,14 +3,14 @@ import Table from "../Table";
 import axios from "axios";
 import Modal from "react-modal";
 import { CSSTransition } from "react-transition-group";
-import "./Home.css"; // Import your CSS file for animations
+import "./Bem.css"; // Import your CSS file for animations
 import ConfirmarButton from "../ConfirmarButton";
 import BemCreateForm from "./BemCreateForm";
 import { Link } from "react-router-dom";
 
 Modal.setAppElement("#root");
 
-const Home = () => {
+const Bem = () => {
   const [data, setData] = useState([]);
   const [selectedBem, setSelectedBem] = useState(null);
   const [editModalIsOpen, setEditModalIsOpen] = useState(false);
@@ -236,4 +236,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Bem;
