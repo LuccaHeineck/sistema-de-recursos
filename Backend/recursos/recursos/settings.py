@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'core',
     'bem',
     'rest_framework_simplejwt',
+    'django_filters',
 ]
 
 REST_FRAMEWORK = {

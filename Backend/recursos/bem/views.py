@@ -7,6 +7,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.generics import DestroyAPIView
+from django.db.models import Q
 
 
 class BemCreateView(APIView):
@@ -51,7 +52,35 @@ class BemDeleteView(DestroyAPIView):
 
 class BemListView(APIView):
     def get(self, request):
+        # Pegando os parâmetros de filtro da URL
+        id_bem = request.GET.get('id_bem', None)
+        descricao = request.GET.get('descricao', None)
+        permite_reserva = request.GET.get('permite_reserva', None)
+        status_bem = request.GET.get('status_bem', None)
+        id_tipo_bem = request.GET.get('id_tipo_bem', None)
+
+        # Inicia a query sem filtros
         bens = Bem.objects.all()
+
+        # Adiciona filtros se houver parâmetros fornecidos
+        if id_bem:
+            bens = bens.filter(id_bem=id_bem)
+
+        if descricao:
+            bens = bens.filter(descricao__icontains=descricao)
+
+        if permite_reserva is not None:
+            # Converte para booleano
+            permite_reserva = permite_reserva.lower() == 'true'
+            bens = bens.filter(permite_reserva=permite_reserva)
+
+        if status_bem:
+            bens = bens.filter(status_bem=status_bem)
+
+        if id_tipo_bem:
+            bens = bens.filter(id_tipo_bem=id_tipo_bem)
+
+        # Serializando os resultados filtrados
         serializer = BemSerializer(bens, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
