@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'core',
     'bem',
+    'retiradas',
     'rest_framework_simplejwt',
     'django_filters',
 ]
@@ -115,7 +116,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=2000), # Default is 5 minutes
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=2000),  # Default is 5 minutes
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),   # Default is 1 day
 }
 
@@ -149,4 +150,3 @@ CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
 ]
 CORS_ALLOW_CREDENTIALS = True
-
