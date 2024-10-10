@@ -22,7 +22,7 @@ module.exports = {
         customLightBlue: "#83A3EC",
         customYellow: "#FDE63A",
         customLightYellow: "#FEED72",
-        customDarkYellow: "#F2D602",
+        customDarkYellow: "#1c1b14",
       },
 
       backdropBlur: {

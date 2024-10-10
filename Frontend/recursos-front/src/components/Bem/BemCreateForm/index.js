@@ -83,7 +83,7 @@ const BemCreateForm = () => {
       )}
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="block text-sm font-medium">Descrição:</label>
+          <label className="block text-sm font-medium">Descrição</label>
           <input
             type="text"
             name="descricao"
@@ -100,6 +100,7 @@ const BemCreateForm = () => {
             name="id_tipo_bem"
             value={formData.id_tipo_bem}
             onChange={handleChange}
+            required
             className="bg-customGreyLight text-white mt-1 block w-full p-2 border border-customLightGrey rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
           >
             <option value="" disabled>
@@ -115,7 +116,7 @@ const BemCreateForm = () => {
 
         <div className="flex space-x-4">
           <div className="w-1/2">
-            <label className="block text-sm font-medium">Status:</label>
+            <label className="block text-sm font-medium">Status</label>
             <select
               name="status_bem"
               value={formData.status_bem}

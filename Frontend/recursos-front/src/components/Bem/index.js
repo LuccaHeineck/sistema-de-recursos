@@ -7,6 +7,7 @@ import "./Bem.css"; // Import your CSS file for animations
 import ConfirmarButton from "../ConfirmarButton";
 import BemCreateForm from "./BemCreateForm";
 import { Link } from "react-router-dom";
+import BemFilterForm from "./BemFilterForm";
 
 Modal.setAppElement("#root");
 
@@ -17,6 +18,21 @@ const Bem = () => {
   const [confirmationModalIsOpen, setConfirmationModalIsOpen] = useState(false);
   const [tiposBem, setTiposBem] = useState([]);
   const [showSuccess, setShowSuccess] = useState(false);
+
+  const fetchBens = (filters = {}) => {
+    // Construção da query string com base nos filtros
+    const params = new URLSearchParams(filters).toString();
+
+    console.log(params);
+    axios
+      .get(`http://127.0.0.1:8000/bem/listar/?${params}`)
+      .then((response) => {
+        setData(response.data);
+      })
+      .catch((error) => {
+        console.error("There was an error fetching the data!", error);
+      });
+  };
 
   useEffect(() => {
     axios
@@ -35,6 +51,8 @@ const Bem = () => {
       .catch((error) => {
         console.error("There was an error fetching tipos de bem!", error);
       });
+
+    fetchBens();
   }, []);
 
   const openEditModal = (bem) => {
@@ -116,14 +134,12 @@ const Bem = () => {
         </div>
       </CSSTransition>
 
+      <div>
+        <BemFilterForm onFilter={fetchBens} tiposBem={tiposBem} />
+      </div>
+
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-semibold mb-4">Lista de Bens</h1>
-        <Link
-          to="/bem/inserir"
-          className="mb-6 border border-customYellow flex items-center space-x-2 p-3 px-7 text-lg rounded-lg hover:bg-customGreyLight text-customYellow"
-        >
-          <span className="pl-2">Criar novo</span>
-        </Link>
       </div>
 
       <Table
@@ -205,19 +221,19 @@ const Bem = () => {
                 </div>
               </div>
 
-              <div className="flex gap-4">
-                <button
-                  type="submit"
-                  className="inline-flex items-center px-6 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-customBlue hover:bg-blue-900"
-                >
-                  Salvar
-                </button>
+              <div className="flex gap-4 justify-end">
                 <button
                   type="button"
                   onClick={closeEditModal}
                   className="inline-flex items-center px-6 py-2 border text-sm font-medium rounded-md shadow-sm text-white bg-customGrey hover:bg-customGreyLight border-customBlue"
                 >
                   Cancelar
+                </button>
+                <button
+                  type="submit"
+                  className="inline-flex items-center px-6 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-customBlue hover:bg-blue-900"
+                >
+                  Salvar
                 </button>
               </div>
             </form>

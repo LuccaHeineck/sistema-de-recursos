@@ -1,0 +1,39 @@
+.fields {
+  background-color: #151314; /* Example color for bg-customGrey */
+  color: #ffffff; /* Example color for text-white */
+  border: 1px solid #a0a0a0; /* Example color for border-customLightGrey */
+  border-radius: 0.4rem; /* Example value for rounded-s (based on your design) */
+  outline: none; /* Removes default outline */
+  padding: 0.6rem; /* Equivalent to p-1 (padding: 0.25rem) */
+  width: 25rem;
+}
+
+.fields:focus {
+  border-color: #ffd700; /* Example color for focus:border-customYellow */
+  background-color: #1c1b14; /* Example color for focus:bg-customDarkYellow */
+}
+
+.fields:hover {
+  border-color: #ffd700; /* Example color for focus:border-customYellow */
+  background-color: #1c1b14; /* Example color for focus:bg-customDarkYellow */
+}
+
+.fieldsCombo {
+  background-color: #151314; /* Example color for bg-customGrey */
+  color: #ffffff; /* Example color for text-white */
+  border: 1px solid #a0a0a0; /* Example color for border-customLightGrey */
+  border-radius: 0.4rem; /* Example value for rounded-s (based on your design) */
+  outline: none; /* Removes default outline */
+  padding: 0.6rem; /* Equivalent to p-1 (padding: 0.25rem) */
+  width: 25rem;
+}
+
+.fieldsCombo:focus {
+  border-color: #ffd700; /* Example color for focus:border-customYellow */
+  background-color: #151314; /* Example color for focus:bg-customDarkYellow */
+}
+
+.fieldsCombo:hover {
+  border-color: #ffd700; /* Example color for focus:border-customYellow */
+  background-color: #151314; /* Example color for focus:bg-customDarkYellow */
+}

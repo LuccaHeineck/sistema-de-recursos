@@ -119,10 +119,13 @@ const TipoBem = () => {
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-semibold mb-4">Lista de Tipos Bens</h1>
         <Link
-          to="/tipobem/inserir"
-          className="mb-6 border border-customYellow flex items-center space-x-2 p-3 px-7 text-lg rounded-lg hover:bg-customGreyLight text-customYellow"
+          to="/bem/inserir"
+          className="relative mb-6 border border-customYellow flex items-center justify-center p-2 px-7 text-lg rounded-md bg-transparent text-customYellow overflow-hidden transition duration-300 group"
         >
-          <span className="pl-2">Criar novo</span>
+          <span className="absolute inset-0 bg-customYellow rounded-full transform scale-0 transition-transform duration-300 group-hover:scale-150 group-hover:origin-bottom"></span>
+          <span className="relative transition duration-300 group-hover:text-customGrey">
+            Criar novo
+          </span>
         </Link>
       </div>
 
@@ -157,19 +160,19 @@ const TipoBem = () => {
                 />
               </div>
 
-              <div className="flex gap-4">
-                <button
-                  type="submit"
-                  className="inline-flex items-center px-6 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-customBlue hover:bg-blue-900"
-                >
-                  Salvar
-                </button>
+              <div className="flex gap-4 justify-end">
                 <button
                   type="button"
                   onClick={closeEditModal}
                   className="inline-flex items-center px-6 py-2 border text-sm font-medium rounded-md shadow-sm text-white bg-customGrey hover:bg-customGreyLight border-customBlue"
                 >
                   Cancelar
+                </button>
+                <button
+                  type="submit"
+                  className="inline-flex items-center px-6 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-customBlue hover:bg-blue-900"
+                >
+                  Salvar
                 </button>
               </div>
             </form>

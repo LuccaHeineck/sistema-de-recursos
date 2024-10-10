@@ -51,7 +51,7 @@ const Menu = () => {
   };
 
   return (
-    <div className="bg-customGreyDark text-white p-4 h-screen w-72 fixed left-0 top-0 rounded-tr-xl rounded-br-xl overflow-y-auto no-scrollbar flex flex-col justify-between">
+    <div className="bg-customGreyDark text-white p-4 h-screen w-72 fixed left-0 top-0 rounded-tr-xl overflow-y-auto no-scrollbar flex flex-col justify-between">
       <ul className="space-y-4">
         <DropdownButton
           label="Gerenciar"
