@@ -7,6 +7,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.generics import DestroyAPIView
+from rest_framework.pagination import PageNumberPagination
+
 from django.db.models import Q
 
 
@@ -17,7 +19,8 @@ class BemCreateView(APIView):
     def post(self, request):
         # Passa o contexto do request para o serializer
 
-        serializer = BemSerializer(data=request.data, context={'request': request})
+        serializer = BemSerializer(
+            data=request.data, context={'request': request})
 
         if serializer.is_valid():
             bem = serializer.save()
@@ -34,6 +37,7 @@ class BemUpdateView(UpdateAPIView):
     def perform_update(self, serializer):
         # Optionally override this method if you need custom behavior on update
         serializer.save(updated_by=self.request.user)
+
 
 class BemDeleteView(DestroyAPIView):
     queryset = Bem.objects.all()
@@ -80,9 +84,14 @@ class BemListView(APIView):
         if id_tipo_bem:
             bens = bens.filter(id_tipo_bem=id_tipo_bem)
 
+        # Configura o paginador
+        paginator = PageNumberPagination()
+        paginator.page_size = 2  # Número de ítens por página
+        result_page = paginator.paginate_queryset(bens, request)
+
         # Serializando os resultados filtrados
-        serializer = BemSerializer(bens, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        serializer = BemSerializer(result_page, many=True)
+        return paginator.get_paginated_response(serializer.data)
 
 
 class TipoBemListView(APIView):
@@ -90,7 +99,8 @@ class TipoBemListView(APIView):
         tipos_bem = TipoBem.objects.all()
         serializer = TipoBemSerializer(tipos_bem, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
-    
+
+
 class TipoBemCreateView(APIView):
     def post(self, request):
         serializer = TipoBemSerializer(data=request.data)
@@ -98,6 +108,7 @@ class TipoBemCreateView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class TipoBemUpdateView(APIView):
     def put(self, request, pk):
@@ -112,6 +123,7 @@ class TipoBemUpdateView(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 class TipoBemDeleteView(APIView):
     def delete(self, request, pk):
         try:
@@ -120,6 +132,4 @@ class TipoBemDeleteView(APIView):
             return Response({'error': 'TipoBem não encontrado'}, status=status.HTTP_404_NOT_FOUND)
 
         tipo_bem.delete()
-        return Response({'message': 'TipoBem deletado com sucesso'}, status=status.HTTP_204_NO_CONTENT)    
-
-
+        return Response({'message': 'TipoBem deletado com sucesso'}, status=status.HTTP_204_NO_CONTENT)
