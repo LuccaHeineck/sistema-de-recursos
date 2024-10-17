@@ -8,6 +8,7 @@ import ConfirmarButton from "../ConfirmarButton";
 import BemCreateForm from "./BemCreateForm";
 import { Link } from "react-router-dom";
 import BemFilterForm from "./BemFilterForm";
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 
 Modal.setAppElement("#root");
 
@@ -18,16 +19,21 @@ const Bem = () => {
   const [confirmationModalIsOpen, setConfirmationModalIsOpen] = useState(false);
   const [tiposBem, setTiposBem] = useState([]);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1); // State for current page
+  const [totalCount, setTotalCount] = useState(0); // Total number of items
 
-  const fetchBens = (filters = {}) => {
-    // Construção da query string com base nos filtros
-    const params = new URLSearchParams(filters).toString();
+  const totalPages = Math.ceil(totalCount / 2); // Change 2 to your desired items per page
+  const itemsPerPage = 2;
 
-    console.log(params);
+  const fetchBens = (filters = {}, page = 1) => {
+    const params = new URLSearchParams({ ...filters, page }).toString();
+
     axios
       .get(`http://127.0.0.1:8000/bem/listar/?${params}`)
       .then((response) => {
-        setData(response.data);
+        setData(response.data.results);
+        setTotalCount(response.data.count);
+        setCurrentPage(page);
       })
       .catch((error) => {
         console.error("There was an error fetching the data!", error);
@@ -35,14 +41,7 @@ const Bem = () => {
   };
 
   useEffect(() => {
-    axios
-      .get("http://127.0.0.1:8000/bem/listar/")
-      .then((response) => {
-        setData(response.data);
-      })
-      .catch((error) => {
-        console.error("There was an error fetching the data!", error);
-      });
+    fetchBens();
     axios
       .get("http://127.0.0.1:8000/bem/tipo_bem/listar/")
       .then((response) => {
@@ -51,8 +50,6 @@ const Bem = () => {
       .catch((error) => {
         console.error("There was an error fetching tipos de bem!", error);
       });
-
-    fetchBens();
   }, []);
 
   const openEditModal = (bem) => {
@@ -121,6 +118,13 @@ const Bem = () => {
       });
   };
 
+  const handlePageChange = (pageNumber) => {
+    if (pageNumber >= 1 && pageNumber <= totalPages) {
+      setCurrentPage(pageNumber);
+      fetchBens({}, pageNumber);
+    }
+  };
+
   return (
     <div className="p-4 min-h-screen">
       <CSSTransition
@@ -147,6 +151,37 @@ const Bem = () => {
         onEdit={openEditModal}
         onDelete={openConfirmationModal}
       />
+
+      <div className="flex justify-center items-center mt-4 gap-6">
+        <button
+          className="relative mb-6 border border-customBlue flex items-center justify-center p-2 px-5 text-lg rounded-md bg-transparent text-customBlue overflow-hidden transition duration-300 group"
+          onClick={() => handlePageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+        >
+          <span className="absolute inset-0 bg-customBlue rounded-full transform scale-0 transition-transform duration-300 group-hover:scale-150 group-hover:origin-bottom"></span>
+          <span className="relative transition duration-300 group-hover:text-white">
+            <ChevronLeftIcon className=" h-5 w-5" aria-hidden="true" />
+          </span>
+        </button>
+
+        <div className="mb-6 font-light text-customLightGrey">
+          <span>
+            Página {currentPage} de {totalPages}
+          </span>
+        </div>
+
+        <button
+          className="relative mb-6 border border-customBlue flex items-center justify-center p-2 px-5 text-lg rounded-md bg-transparent text-customBlue overflow-hidden transition duration-300 group"
+          onClick={() => handlePageChange(currentPage + 1)}
+          disabled={currentPage === totalPages}
+        >
+          <span className="absolute inset-0 bg-customBlue rounded-full transform scale-0 transition-transform duration-300 group-hover:scale-150 group-hover:origin-bottom"></span>
+          <span className="relative transition duration-300 group-hover:text-white">
+            <ChevronRightIcon className=" h-5 w-5" aria-hidden="true" />
+          </span>
+        </button>
+      </div>
+
       <Modal
         isOpen={editModalIsOpen}
         onRequestClose={closeEditModal}
@@ -207,47 +242,44 @@ const Bem = () => {
 
                 <div className="w-1/2">
                   <label className="block text-sm font-medium">
-                    Permite reserva?
+                    Permite Reserva:
                   </label>
                   <select
                     name="permite_reserva"
                     value={selectedBem.permite_reserva}
                     onChange={handleInputChange}
-                    className="bg-customGrey text-white mb-5 mt-1 block w-full p-2 border border-customLightGrey rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                    className="bg-customGrey text-white mt-1 block w-full p-2 border border-customLightGrey rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                   >
-                    <option value="true">Sim</option>
-                    <option value="false">Não</option>
+                    <option value={true}>Sim</option>
+                    <option value={false}>Não</option>
                   </select>
                 </div>
               </div>
 
-              <div className="flex gap-4 justify-end">
-                <button
-                  type="button"
-                  onClick={closeEditModal}
-                  className="inline-flex items-center px-6 py-2 border text-sm font-medium rounded-md shadow-sm text-white bg-customGrey hover:bg-customGreyLight border-customBlue"
-                >
-                  Cancelar
-                </button>
-                <button
-                  type="submit"
-                  className="inline-flex items-center px-6 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-customBlue hover:bg-blue-900"
-                >
-                  Salvar
-                </button>
+              <div className="mt-4">
+                <ConfirmarButton text="Salvar" />
               </div>
             </form>
           </div>
         )}
       </Modal>
 
-      <ConfirmarButton
+      <Modal
         isOpen={confirmationModalIsOpen}
         onRequestClose={closeConfirmationModal}
-        onConfirm={handleDeleteConfirm}
-        title="Confirmar Deleção"
-        message="Você tem certeza que deseja deletar este bem?"
-      />
+        contentLabel="Confirmar Exclusão"
+        className="fixed inset-0 flex items-center justify-center p-4"
+        overlayClassName="fixed inset-0 bg-black bg-opacity-60 backdrop-blur-xs"
+      >
+        <div className="bg-customGrey border border-customGreyLight text-white p-8 rounded-lg mx-auto font-poppins">
+          <h2 className="text-2xl font-semibold mb-4">Confirmar Exclusão</h2>
+          <p>Você tem certeza que deseja excluir este bem?</p>
+          <div className="flex justify-end mt-4">
+            <ConfirmarButton text="Cancelar" onClick={closeConfirmationModal} />
+            <ConfirmarButton text="Excluir" onClick={handleDeleteConfirm} />
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 };

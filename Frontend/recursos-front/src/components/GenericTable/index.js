@@ -17,6 +17,7 @@ const GenericTable = ({ columns, data, onEdit, onDelete }) => {
           </tr>
         </thead>
         <tbody>
+          {console.log(data)}
           {data.map((item, index) => (
             <tr
               key={index}
