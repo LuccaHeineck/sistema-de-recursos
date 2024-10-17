@@ -7,6 +7,7 @@ class Retiradas(models.Model):
     MOTIVO_RETIRADA_CHOICES = [
         ('TCC', 'Trabalho de Conclusão de Curso'),
         ('Aula', 'Aula'),
+        ('Projetos', 'Projetos')
     ]
 
     id_retirada = models.AutoField(primary_key=True)

@@ -8,7 +8,6 @@ urlpatterns = [
          name='editar-retirada'),
     path('deletar/<int:pk>/', views.RetiradaDeleteView.as_view(),
          name='deletar-retirada'),
-
     path('itens/', views.ItensRetiradaListView.as_view(),
          name='listar-itens_retirada'),
     # path(),

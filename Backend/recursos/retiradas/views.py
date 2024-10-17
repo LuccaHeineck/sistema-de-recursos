@@ -3,6 +3,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.generics import UpdateAPIView, DestroyAPIView
+from rest_framework.pagination import PageNumberPagination
 
 from .serializer import ItensRetiradaSerializer, RetiradasSerializer
 from .models import ItensRetirada, Retiradas
@@ -64,9 +65,13 @@ class RetiradaListView(APIView):
         if data_retirada:
             retiradas = retiradas.filter(data_retirada=data_retirada)
 
+        paginator = PageNumberPagination()
+        paginator.page_size = 2  # Número de ítens por página
+        result_page = paginator.paginate_queryset(retiradas, request)
+
         # Serializando os resultados filtrados
-        serializer = RetiradasSerializer(retiradas, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        serializer = RetiradasSerializer(result_page, many=True)
+        return paginator.get_paginated_response(serializer.data)
 
 
 class ItensRetiradaCreateView(APIView):
