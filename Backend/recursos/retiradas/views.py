@@ -53,8 +53,8 @@ class RetiradaListView(APIView):
         id_retirada = request.GET.get('id_retirada', None)
         id_pessoa = request.GET.get('id_pessoa', None)
         data_retirada = request.GET.get('data_retirada', None)
-        data_limite = request.GET.get('data_limite', None)
-        quantidade_bem = request.GET.get('quantidade_bem', None)
+        motivo_retirada = request.GET.get('motivo_retirada', None)
+        status_retirada = request.GET.get('status_retirada', None)
 
         # Inicia a query sem filtros
         retiradas = Retiradas.objects.all()
@@ -116,6 +116,11 @@ class ItensRetiradaListView(APIView):
         id_retirada = request.GET.get('id_retirada', None)
         id_bem = request.GET.get('id_bem', None)
         quantidade_bem = request.GET.get('quantidade_bem', None)
+        data_retirada = request.GET.get('data_retirada', None)
+        data_devolucao = request.GET.get('data_devolucao', None)
+        data_limite = request.GET.get('data_limite', None)
+        status_retirada = request.GET.get('status_retirada', None)
+        observacao = request.GET.get('observacao', None)
 
         # Inicia a query sem filtros
         itens_retirada = ItensRetirada.objects.all()
