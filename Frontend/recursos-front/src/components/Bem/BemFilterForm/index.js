@@ -47,7 +47,7 @@ const BemFilterForm = ({ onFilter, tiposBem }) => {
               id="idBem"
               value={idBem}
               onChange={(e) => setIdBem(e.target.value)}
-              placeholder="Enter Bem ID"
+              placeholder="ID Bem..."
             />
           </div>
 
@@ -61,7 +61,7 @@ const BemFilterForm = ({ onFilter, tiposBem }) => {
               id="descricao"
               value={descricao}
               onChange={(e) => setDescricao(e.target.value)}
-              placeholder="Enter description"
+              placeholder="Descrição..."
             />
           </div>
 
@@ -75,7 +75,7 @@ const BemFilterForm = ({ onFilter, tiposBem }) => {
               id="criadoPor"
               value={criadoPor}
               onChange={(e) => setCriadoPor(e.target.value)}
-              placeholder="Enter criado por"
+              placeholder="Criado por..."
             />
           </div>
 
@@ -89,7 +89,7 @@ const BemFilterForm = ({ onFilter, tiposBem }) => {
               value={permiteReserva}
               onChange={(e) => setPermiteReserva(e.target.value)}
             >
-              <option value="">Selecione</option>
+              <option value=""></option>
               <option value="true">Sim</option>
               <option value="false">Não</option>
             </select>
@@ -105,7 +105,7 @@ const BemFilterForm = ({ onFilter, tiposBem }) => {
               value={statusBem}
               onChange={(e) => setStatusBem(e.target.value)}
             >
-              <option value="">Selecione</option>
+              <option value=""></option>
               <option value="D">Disponível</option>
               <option value="R">Retirado</option>
             </select>
@@ -113,7 +113,7 @@ const BemFilterForm = ({ onFilter, tiposBem }) => {
 
           <div>
             <label className="block mb-1 mt-2 text-md" htmlFor="idTipoBem">
-              ID Tipo Bem
+              Tipo Bem
             </label>
             <select
               className="fieldsCombo"
@@ -121,8 +121,7 @@ const BemFilterForm = ({ onFilter, tiposBem }) => {
               value={idTipoBem}
               onChange={(e) => setIdTipoBem(e.target.value)}
             >
-              <option value="">Selecione um tipo</option>
-              <option value="">Selecione</option>
+              <option value=""></option>
               {tiposBem.map((tipo) => (
                 <option key={tipo.id_tipo_bem} value={tipo.tipo_bem}>
                   {tipo.tipo_bem}

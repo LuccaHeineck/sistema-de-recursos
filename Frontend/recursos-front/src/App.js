@@ -13,6 +13,7 @@ import TipoBem from "./components/TipoBem"; // Assuming Bem is in components fol
 import BemCreateForm from "./components/Bem/BemCreateForm";
 import Register from "./components/Register";
 import TipoBemCreateForm from "./components/TipoBem/TipoBemCreateForm";
+import Retirada from "./components/Retirada";
 
 const App = () => {
   const [token, setToken] = useState(localStorage.getItem("token"));
@@ -95,6 +96,19 @@ const App = () => {
               token && user ? (
                 <div>
                   <TipoBemCreateForm />
+                </div>
+              ) : (
+                <Navigate to="/login" />
+              )
+            }
+          />
+
+          <Route
+            path="/retirada"
+            element={
+              token && user ? (
+                <div>
+                  <Retirada />
                 </div>
               ) : (
                 <Navigate to="/login" />

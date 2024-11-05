@@ -26,7 +26,7 @@ const Menu = () => {
 
   const optionsServicos = {
     retirada: {
-      path: "/retiradas",
+      path: "/retirada",
       icon: ArrowRightEndOnRectangleIcon,
       label: "Retirada",
     },

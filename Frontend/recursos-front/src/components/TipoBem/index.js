@@ -119,7 +119,7 @@ const TipoBem = () => {
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-semibold mb-4">Lista de Tipos Bens</h1>
         <Link
-          to="/bem/inserir"
+          to="/tipobem/inserir"
           className="relative mb-6 border border-customYellow flex items-center justify-center p-2 px-7 text-lg rounded-md bg-transparent text-customYellow overflow-hidden transition duration-300 group"
         >
           <span className="absolute inset-0 bg-customYellow rounded-full transform scale-0 transition-transform duration-300 group-hover:scale-150 group-hover:origin-bottom"></span>

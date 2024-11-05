@@ -25,7 +25,7 @@ const Login = ({ setUser }) => {
 
   return (
     <div className="flex items-center justify-center h-screen bg-customGrey">
-      <div className="w-1/2 md:w-1/3 lg:w-1/4">
+      <div className="w-1/2 md:w-1/3 lg:w-1/5">
         <form
           onSubmit={handleLogin}
           className="flex flex-col items-center bg-customGreyLight p-6 rounded-lg shadow-lg"
@@ -37,7 +37,7 @@ const Login = ({ setUser }) => {
             placeholder="Username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            className="w-full p-3 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full p-3 mb-4 text-white bg-customGrey rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
 
           <input
@@ -45,12 +45,13 @@ const Login = ({ setUser }) => {
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full p-3 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full p-3 mb-4 text-white bg-customGrey rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
 
           <button
             type="submit"
-            className="w-full p-3 bg-customBlue text-white font-semibold rounded-lg hover:bg-customDarkBlue transition duration-200"
+            style={{ width: "90%" }}
+            className=" p-3 mt-5 bg-customBlue text-white font-semibold rounded-lg hover:bg-customDarkBlue transition duration-200"
           >
             Login
           </button>
@@ -60,7 +61,7 @@ const Login = ({ setUser }) => {
           {/* Registration Link */}
           <p className="mt-4 text-white">
             Não possui uma conta?{" "}
-            <Link to="/register" className="text-blue-400 hover:underline">
+            <Link to="/register" className="text-customYellow hover:underline">
               Cadastre-se aqui!
             </Link>
           </p>

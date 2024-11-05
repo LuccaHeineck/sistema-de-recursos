@@ -255,31 +255,33 @@ const Bem = () => {
                   </select>
                 </div>
               </div>
-
-              <div className="mt-4">
-                <ConfirmarButton text="Salvar" />
+              <div className="flex gap-4 justify-end">
+                <button
+                  type="button"
+                  onClick={closeEditModal}
+                  className="inline-flex items-center px-6 py-2 border text-sm font-medium rounded-md shadow-sm text-white bg-customGrey hover:bg-customGreyLight border-customBlue"
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="submit"
+                  className="inline-flex items-center px-6 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-customBlue hover:bg-blue-900"
+                >
+                  Salvar
+                </button>
               </div>
             </form>
           </div>
         )}
       </Modal>
 
-      <Modal
+      <ConfirmarButton
         isOpen={confirmationModalIsOpen}
         onRequestClose={closeConfirmationModal}
-        contentLabel="Confirmar Exclusão"
-        className="fixed inset-0 flex items-center justify-center p-4"
-        overlayClassName="fixed inset-0 bg-black bg-opacity-60 backdrop-blur-xs"
-      >
-        <div className="bg-customGrey border border-customGreyLight text-white p-8 rounded-lg mx-auto font-poppins">
-          <h2 className="text-2xl font-semibold mb-4">Confirmar Exclusão</h2>
-          <p>Você tem certeza que deseja excluir este bem?</p>
-          <div className="flex justify-end mt-4">
-            <ConfirmarButton text="Cancelar" onClick={closeConfirmationModal} />
-            <ConfirmarButton text="Excluir" onClick={handleDeleteConfirm} />
-          </div>
-        </div>
-      </Modal>
+        onConfirm={handleDeleteConfirm}
+        title="Confirmar Deleção"
+        message="Você tem certeza que deseja deletar este bem?"
+      />
     </div>
   );
 };
