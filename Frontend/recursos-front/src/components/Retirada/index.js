@@ -28,12 +28,14 @@ const Retirada = () => {
     <div className="p-6 max-w-lg mx-auto">
       {!showNextPart ? (
         <>
-          <h1 className="text-2xl font-bold mb-4 text-center">Select a User</h1>
+          <h1 className="text-2xl font-bold mb-4 text-center">
+            Pesquisar usuário
+          </h1>
           <UserLookup onUserSelect={handleUserSelect} />
           {selectedUser && (
             <div className="mt-4 p-4 bg-green-200 text-customGrey rounded-lg shadow-md">
-              <h2 className="text-xl font-semibold">Selected User</h2>
-              <p>Name: {selectedUser.name}</p>
+              <h2 className="text-xl font-semibold">Usuário selecionado</h2>
+              <p>Nome: {selectedUser.username}</p>
               <p>ID: {selectedUser.id}</p>
               <p>Email: {selectedUser.email}</p>
             </div>
@@ -43,7 +45,7 @@ const Retirada = () => {
               onClick={handleNextClick}
               className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
             >
-              Next
+              Próximo
             </button>
           )}
         </>
@@ -56,7 +58,9 @@ const Retirada = () => {
             <p>Email: {selectedUser.email}</p>
           </div>
 
-          <h2 className="text-2xl font-bold mb-4 text-center">Select Bems</h2>
+          <h2 className="text-2xl font-bold mb-4 text-center">
+            Selecione bens para reservar
+          </h2>
           <BemLookup
             selectedBems={selectedBems}
             onBemSelect={handleBemSelect}
@@ -64,13 +68,13 @@ const Retirada = () => {
 
           {selectedBems.length > 0 && (
             <div className="mt-4 p-4 bg-green-200 text-customGrey rounded-lg shadow-md">
-              <h2 className="text-xl font-semibold mb-2">Selected Bems</h2>
+              <h2 className="text-xl font-semibold mb-2">Bens selecionados</h2>
               <ul>
                 {selectedBems.map((bem, index) => (
                   <li key={`${bem.id}-${index}`} className="border-b py-2">
                     <p className="font-semibold">{bem.name}</p>
                     <p>ID: {bem.id}</p>
-                    <p>Description: {bem.description}</p>
+                    <p>Descrição: {bem.description}</p>
                   </li>
                 ))}
               </ul>
@@ -80,7 +84,7 @@ const Retirada = () => {
             onClick={handleFinishClick}
             className="mt-4 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600"
           >
-            Finish
+            Retirar
           </button>
         </div>
       )}

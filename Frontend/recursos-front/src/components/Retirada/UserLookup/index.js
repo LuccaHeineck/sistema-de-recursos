@@ -60,13 +60,14 @@ const UserLookup = ({ onUserSelect }) => {
           placeholder="Pesquise por ID ou nome"
           className="border bg-customGrey border-gray-300 rounded-lg p-2 flex-grow mr-2"
         />
-        <button
+        {/* <button
           onClick={handleSearch}
           disabled={!query}
           className="bg-blue-500 text-white px-4 py-2 rounded-lg disabled:bg-blue-300"
+          style={}
         >
           {loading ? "Buscando..." : "Buscar"}
-        </button>
+        </button> */}
       </div>
       {results.length > 0 && (
         <ul className="mt-4 bg-customGreyDark shadow-md rounded-lg p-4 ">

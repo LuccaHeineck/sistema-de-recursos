@@ -81,7 +81,7 @@ const Bem = () => {
     e.preventDefault();
     axios
       .put(
-        `http://127.0.0.1:8000/bem/update/${selectedBem.id_bem}/`,
+        `http://127.0.0.1:8000/bem/editar/${selectedBem.id_bem}/`,
         selectedBem
       )
       .then((response) => {
@@ -104,7 +104,7 @@ const Bem = () => {
 
   const handleDeleteConfirm = () => {
     axios
-      .delete(`http://127.0.0.1:8000/bem/delete/${selectedBem.id_bem}/`)
+      .delete(`http://127.0.0.1:8000/bem/deletar/${selectedBem.id_bem}/`)
       .then(() => {
         setData(data.filter((bem) => bem.id_bem !== selectedBem.id_bem));
         closeConfirmationModal();

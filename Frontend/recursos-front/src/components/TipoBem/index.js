@@ -58,7 +58,7 @@ const TipoBem = () => {
     e.preventDefault();
     axios
       .put(
-        `http://127.0.0.1:8000/bem/tipo_bem/atualizar/${selectedTipoBem.id_tipo_bem}/`,
+        `http://127.0.0.1:8000/bem/tipo_bem/editar/${selectedTipoBem.id_tipo_bem}/`,
         selectedTipoBem
       )
       .then((response) => {

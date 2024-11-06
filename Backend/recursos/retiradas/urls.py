@@ -10,7 +10,4 @@ urlpatterns = [
          name='deletar-retirada'),
     path('itens/', views.ItensRetiradaListView.as_view(),
          name='listar-itens_retirada'),
-    # path(),
-    # path(),
-    # path(),
 ]
