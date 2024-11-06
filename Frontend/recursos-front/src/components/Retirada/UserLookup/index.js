@@ -1,5 +1,5 @@
 // UserLookup.js
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./Lookup.css";
 
@@ -8,36 +8,40 @@ const UserLookup = ({ onUserSelect }) => {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  //   const handleSearch = async () => {
-  //     setLoading(true);
-  //     try {
-  //       const response = await axios.get(`/api/users/search/?query=${query}`);
-  //       setResults(response.data);
-  //     } catch (error) {
-  //       console.error("Error fetching users:", error);
-  //     }
-  //     setLoading(false);
-  //   };
+  const API_URL = "http://127.0.0.1:8000/recursos/";
+  const isNumeric = !isNaN(query);
 
-  const mockData = [
-    { id: 1, name: "John Doe", email: "john.doe@example.com" },
-    { id: 2, name: "Jane Smith", email: "jane.smith@example.com" },
-    { id: 3, name: "Sam Wilson", email: "sam.wilson@example.com" },
-  ];
+  // Pesquisa em tempo real
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      if (query) {
+        handleSearch();
+      } else {
+        setResults([]); // Limpa os resultados se não houver query
+      }
+    }, 150); // Atraso de 150ms
 
-  const handleSearch = () => {
+    return () => {
+      clearTimeout(handler); // Limpa o timeout se a query mudar antes do tempo
+    };
+  }, [query]);
+
+  const handleSearch = async () => {
+    // Verifica se o query é um número (id) ou uma string (username)
     setLoading(true);
-    // Simulate network delay
-    setTimeout(() => {
-      // Filter mock data based on query matching ID or name
-      const filteredResults = mockData.filter(
-        (user) =>
-          user.name.toLowerCase().includes(query.toLowerCase()) ||
-          user.id.toString() === query
+    try {
+      const response = await axios.get(
+        API_URL +
+          `users/${isNumeric ? `${query}` : `?username=${query}&limit=10`}`
       );
-      setResults(filteredResults);
-      setLoading(false);
-    }, 500); // Simulate a short delay
+
+      setResults(
+        Array.isArray(response.data) ? response.data : [response.data]
+      );
+    } catch (error) {
+      setResults([]);
+    }
+    setLoading(false);
   };
 
   const handleUserSelect = (user) => {
@@ -53,7 +57,7 @@ const UserLookup = ({ onUserSelect }) => {
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search by ID or name"
+          placeholder="Pesquise por ID ou nome"
           className="border bg-customGrey border-gray-300 rounded-lg p-2 flex-grow mr-2"
         />
         <button
@@ -61,7 +65,7 @@ const UserLookup = ({ onUserSelect }) => {
           disabled={!query}
           className="bg-blue-500 text-white px-4 py-2 rounded-lg disabled:bg-blue-300"
         >
-          {loading ? "Searching..." : "Search"}
+          {loading ? "Buscando..." : "Buscar"}
         </button>
       </div>
       {results.length > 0 && (
@@ -80,7 +84,12 @@ const UserLookup = ({ onUserSelect }) => {
         </ul>
       )}
       {query && !loading && results.length === 0 && (
-        <p className="text-center mt-4 text-gray-500">No results found</p>
+        <p className="text-center mt-4 text-gray-500">
+          Usuário com
+          {isNumeric
+            ? ` id: ${query} não encontrado`
+            : ` ${query} não encontrado`}
+        </p>
       )}
     </div>
   );
