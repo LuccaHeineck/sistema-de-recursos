@@ -14,6 +14,7 @@ import BemCreateForm from "./components/Bem/BemCreateForm";
 import Register from "./components/Register";
 import TipoBemCreateForm from "./components/TipoBem/TipoBemCreateForm";
 import Retirada from "./components/Retirada";
+import Reserva from "./components/Reserva";
 
 const App = () => {
   const [token, setToken] = useState(localStorage.getItem("token"));
@@ -115,7 +116,21 @@ const App = () => {
               )
             }
           />
+
+          <Route
+            path="/reserva"
+            element={
+              token && user ? (
+                <div>
+                  <Reserva />
+                </div>
+              ) : (
+                <Navigate to="/login" />
+              )
+            }
+          />
         </Route>
+
         {/* Redirect to login for any unknown paths */}
         <Route path="*" element={<Navigate to="/login" />} />
       </Routes>

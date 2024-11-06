@@ -22,8 +22,8 @@ const Bem = () => {
   const [currentPage, setCurrentPage] = useState(1); // State for current page
   const [totalCount, setTotalCount] = useState(0); // Total number of items
 
-  const totalPages = Math.ceil(totalCount / 2); // Change 2 to your desired items per page
-  const itemsPerPage = 2;
+  const totalPages = Math.ceil(totalCount / 5); // Change 2 to your desired items per page
+  const itemsPerPage = 5;
 
   const fetchBens = (filters = {}, page = 1) => {
     const params = new URLSearchParams({ ...filters, page }).toString();

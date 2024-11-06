@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'core',
     'bem',
     'retiradas',
+    'reservas',
     'rest_framework_simplejwt',
     'django_filters',
 ]

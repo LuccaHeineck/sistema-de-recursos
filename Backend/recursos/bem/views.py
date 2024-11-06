@@ -62,6 +62,7 @@ class BemListView(APIView):
         permite_reserva = request.GET.get('permite_reserva', None)
         status_bem = request.GET.get('status_bem', None)
         id_tipo_bem = request.GET.get('id_tipo_bem', None)
+        quantidade_bem = request.GET.get('quantidade_bem', None)
 
         # Inicia a query sem filtros
         bens = Bem.objects.all()
