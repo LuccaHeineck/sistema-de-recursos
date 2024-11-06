@@ -27,7 +27,7 @@ const Bem = () => {
 
   const fetchBens = (filters = {}, page = 1) => {
     const params = new URLSearchParams({ ...filters, page }).toString();
-
+    console.log(params);
     axios
       .get(`http://127.0.0.1:8000/bem/listar/?${params}`)
       .then((response) => {

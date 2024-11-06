@@ -15,6 +15,7 @@ import Register from "./components/Register";
 import TipoBemCreateForm from "./components/TipoBem/TipoBemCreateForm";
 import Retirada from "./components/Retirada";
 import Reserva from "./components/Reserva";
+import "./App.css";
 
 const App = () => {
   const [token, setToken] = useState(localStorage.getItem("token"));

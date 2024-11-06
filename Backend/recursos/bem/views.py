@@ -87,7 +87,7 @@ class BemListView(APIView):
 
         # Configura o paginador
         paginator = PageNumberPagination()
-        paginator.page_size = 2  # Número de ítens por página
+        paginator.page_size = 5  # Número de ítens por página
         result_page = paginator.paginate_queryset(bens, request)
 
         # Serializando os resultados filtrados
