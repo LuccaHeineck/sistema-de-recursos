@@ -59,8 +59,8 @@ const Login = ({ setUser }) => {
           {message && <p className="mt-4 text-red-500">{message}</p>}
 
           {/* Registration Link */}
-          <p className="mt-4 text-white">
-            Não possui uma conta?{" "}
+          <p className="mt-4 text-white text-center">
+            Não possui uma conta? <br />
             <Link to="/register" className="text-customYellow hover:underline">
               Cadastre-se aqui!
             </Link>

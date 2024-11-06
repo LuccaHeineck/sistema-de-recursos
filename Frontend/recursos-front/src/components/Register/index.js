@@ -64,8 +64,8 @@ const Register = () => {
           {message && <p className="mt-4 text-red-500">{message}</p>}
 
           {/* Redirect to Login Link */}
-          <p className="mt-4 text-white">
-            Já possui uma conta?{" "}
+          <p className="mt-4 text-white text-center">
+            Já possui uma conta? <br />
             <Link to="/login" className="text-customYellow hover:underline">
               Login aqui
             </Link>

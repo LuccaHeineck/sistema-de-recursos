@@ -7,4 +7,5 @@ urlpatterns = [
     path('recursos/', include('core.urls')),
     path('bem/', include('bem.urls')),
     path('retiradas/', include('retiradas.urls')),
+    path('reservas/', include('reservas.urls')),
 ]

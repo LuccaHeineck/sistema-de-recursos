@@ -5,11 +5,11 @@ const Table = ({ data, onEdit, onDelete }) => {
     { header: "ID", accessor: "id_bem" },
     { header: "Descrição", accessor: "descricao" },
     { header: "Tipo", accessor: "id_tipo_bem_nome" },
-    { header: "Criado por", accessor: "created_by" },
     {
       header: "Status",
       render: (item) => (item.status_bem === "R" ? "Retirado" : "Disponível"),
     },
+    { header: "Quantidade", accessor: "quantidade_bem" },
     {
       header: "Permite reserva",
       render: (item) => (item.permite_reserva ? "Sim" : "Não"),
@@ -18,6 +18,7 @@ const Table = ({ data, onEdit, onDelete }) => {
       header: "Criado em",
       render: (item) => item.created_at.slice(0, 10),
     },
+    { header: "Criado por", accessor: "created_by" },
   ];
 
   return (

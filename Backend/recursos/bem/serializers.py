@@ -19,7 +19,7 @@ class BemSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Bem
-        fields = ['id_bem', 'descricao', 'permite_reserva', 'status_bem', "id_tipo_bem", 'id_tipo_bem_nome',
+        fields = ['id_bem', 'descricao', 'permite_reserva', 'status_bem', 'quantidade_bem', "id_tipo_bem", 'id_tipo_bem_nome',
                   'created_by', 'created_at']
         read_only_fields = ("id_bem", 'created_by', 'created_at')
 

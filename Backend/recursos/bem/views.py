@@ -62,6 +62,7 @@ class BemListView(APIView):
         permite_reserva = request.GET.get('permite_reserva', None)
         status_bem = request.GET.get('status_bem', None)
         id_tipo_bem = request.GET.get('id_tipo_bem', None)
+        quantidade_bem = request.GET.get('quantidade_bem', None)
 
         # Inicia a query sem filtros
         bens = Bem.objects.all()
@@ -86,7 +87,7 @@ class BemListView(APIView):
 
         # Configura o paginador
         paginator = PageNumberPagination()
-        paginator.page_size = 2  # Número de ítens por página
+        paginator.page_size = 5  # Número de ítens por página
         result_page = paginator.paginate_queryset(bens, request)
 
         # Serializando os resultados filtrados
