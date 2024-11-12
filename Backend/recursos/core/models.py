@@ -2,6 +2,7 @@ from django.db import models
 
 from bem.models import *
 from retiradas.models import *
+from reservas.models import *
 
 
 class TipoPessoa(models.Model):

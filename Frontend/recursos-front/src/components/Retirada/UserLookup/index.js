@@ -79,6 +79,7 @@ const UserLookup = ({ onUserSelect }) => {
             >
               <p className="font-semibold text-lg">{user.name}</p>
               <p>ID: {user.id}</p>
+              <p>Nome: {user.username}</p>
               <p>Email: {user.email}</p>
             </li>
           ))}

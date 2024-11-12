@@ -6,9 +6,9 @@ const BemLookup = ({ selectedBems, onBemSelect }) => {
 
   // Mock data for demonstration purposes
   const mockBems = [
-    { id: 1, name: "BEM One", description: "Description of BEM One" },
-    { id: 2, name: "BEM Two", description: "Description of BEM Two" },
-    { id: 3, name: "BEM Three", description: "Description of BEM Three" },
+    { id: 1, name: "BEM 1", description: "Descrição do Bem 1" },
+    { id: 2, name: "BEM 2", description: "Descrição do Bem 2" },
+    { id: 3, name: "BEM 3", description: "Descrição do Bem 3" },
   ];
 
   // Function to handle input changes
@@ -62,8 +62,8 @@ const BemLookup = ({ selectedBems, onBemSelect }) => {
                 )} // Disable button if already selected
               >
                 {selectedBems.some((selectedBem) => selectedBem.id === bem.id)
-                  ? "Selected"
-                  : "Select"}
+                  ? "Selecionado"
+                  : "Selecionar"}
               </button>
             </li>
           ))}

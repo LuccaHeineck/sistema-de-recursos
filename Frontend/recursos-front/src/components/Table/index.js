@@ -7,7 +7,8 @@ const Table = ({ data, onEdit, onDelete }) => {
     { header: "Tipo", accessor: "id_tipo_bem_nome" },
     {
       header: "Status",
-      render: (item) => (item.status_bem === "R" ? "Retirado" : "Disponível"),
+      render: (item) =>
+        item.status_bem === "R" ? "Indisponível" : "Disponível",
     },
     { header: "Quantidade", accessor: "quantidade_bem" },
     {

@@ -21,7 +21,7 @@ const Retirada = () => {
 
   const handleFinishClick = () => {
     // Finalize the process or submit the selected data
-    alert("Process finished with selected user and Bems.");
+    alert("Retirada executada.");
   };
 
   return (
@@ -51,14 +51,14 @@ const Retirada = () => {
         </>
       ) : (
         <div className="p-6 bg-customGreyLight rounded-lg shadow-lg">
-          <h2 className="text-2xl font-bold mb-4">Selected User</h2>
+          <h2 className="text-2xl font-bold mb-4">Usuário Selecionado</h2>
           <div className="bg-customGrey p-4 rounded-lg shadow mb-4">
             <p className="font-semibold text-lg">{selectedUser.name}</p>
             <p>ID: {selectedUser.id}</p>
             <p>Email: {selectedUser.email}</p>
           </div>
 
-          <h2 className="text-2xl font-bold mb-4 text-center">
+          <h2 className="text-2xl mb-4 text-center mt-10">
             Selecione bens para reservar
           </h2>
           <BemLookup
