@@ -24,6 +24,12 @@ const Retirada = () => {
     alert("Process finished with selected user and Bems.");
   };
 
+  const removeBem = (bemId) => {
+    setSelectedBems((prevSelectedBems) =>
+      prevSelectedBems.filter((bem) => bem.id_bem !== bemId)
+    );
+  };
+
   return (
     <div className="p-6 max-w-lg mx-auto">
       {!showNextPart ? (
@@ -51,7 +57,7 @@ const Retirada = () => {
         </>
       ) : (
         <div className="p-6 bg-customGreyLight rounded-lg shadow-lg">
-          <h2 className="text-2xl font-bold mb-4">Selected User</h2>
+          <h2 className="text-2xl font-bold mb-4">Usuário selecionado</h2>
           <div className="bg-customGrey p-4 rounded-lg shadow mb-4">
             <p className="font-semibold text-lg">{selectedUser.name}</p>
             <p>ID: {selectedUser.id}</p>
@@ -71,10 +77,21 @@ const Retirada = () => {
               <h2 className="text-xl font-semibold mb-2">Bens selecionados</h2>
               <ul>
                 {selectedBems.map((bem, index) => (
-                  <li key={`${bem.id}-${index}`} className="border-b py-2">
+                  <li
+                    key={`${bem.id}-${index}`}
+                    className={`${
+                      selectedBems[0].id_bem === bem.id_bem ? "border-t-2" : ""
+                    } border-b-2 border-white py-2 flex items-center justify-between`}
+                  >
                     <p className="font-semibold">{bem.name}</p>
-                    <p>ID: {bem.id}</p>
-                    <p>Descrição: {bem.description}</p>
+                    <p>ID: {bem.id_bem}</p>
+                    <p>Descrição: {bem.descricao}</p>
+                    <button
+                      className="mt-4 mb-4 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-600"
+                      onClick={() => removeBem(bem.id_bem)}
+                    >
+                      Remover
+                    </button>
                   </li>
                 ))}
               </ul>
