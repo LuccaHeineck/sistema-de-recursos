@@ -64,7 +64,7 @@ const Retirada = () => {
             <p>Email: {selectedUser.email}</p>
           </div>
 
-          <h2 className="text-2xl font-bold mb-4 text-center">
+          <h2 className="text-2xl mb-4 text-center mt-10">
             Selecione bens para reservar
           </h2>
           <BemLookup

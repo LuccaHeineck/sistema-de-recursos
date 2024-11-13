@@ -5,6 +5,6 @@ from .views import ReservaCreateView, ReservaUpdateView, ReservaDeleteView, Rese
 urlpatterns = [
     path('listar/', ReservaListView.as_view(), name='reserva-list'),
     path('cadastrar/', ReservaCreateView.as_view(), name='reserva-create'),
-    path('<int:pk>/editar/', ReservaUpdateView.as_view(), name='reserva-update'),
-    path('<int:pk>/deletar/', ReservaDeleteView.as_view(), name='reserva-delete'),
+    path('editar/<int:pk>/', ReservaUpdateView.as_view(), name='reserva-update'),
+    path('deletar/<int:pk>/', ReservaDeleteView.as_view(), name='reserva-delete'),
 ]
