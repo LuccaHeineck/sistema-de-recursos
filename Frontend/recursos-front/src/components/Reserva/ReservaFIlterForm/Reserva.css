@@ -5,7 +5,9 @@
   border-radius: 0.4rem; /* Example value for rounded-s (based on your design) */
   outline: none; /* Removes default outline */
   padding: 0.6rem; /* Equivalent to p-1 (padding: 0.25rem) */
-  /* width: 25rem; */
+  width: 100%; /* Use 100% to take full width of the container */
+  max-width: 25rem; /* Maximum width */
+  box-sizing: border-box;
 }
 
 .fields:focus {

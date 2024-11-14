@@ -1,0 +1,52 @@
+.fieldsData {
+  background-color: #151314; /* Example color for bg-customGrey */
+  color: #ffffff; /* Example color for text-white */
+  border: 1px solid #a0a0a0; /* Example color for border-customLightGrey */
+  border-radius: 0.4rem; /* Example value for rounded-s (based on your design) */
+  outline: none; /* Removes default outline */
+  padding: 0.6rem; /* Equivalent to p-1 (padding: 0.25rem) */
+  width: 400px;
+  max-width: 400px;
+}
+
+.fieldsData:focus {
+  border-color: #ffd700; /* Example color for focus:border-customYellow */
+  background-color: #1c1b14; /* Example color for focus:bg-customDarkYellow */
+}
+
+.fieldsData:hover {
+  border-color: #ffd700; /* Example color for focus:border-customYellow */
+  background-color: #1c1b14; /* Example color for focus:bg-customDarkYellow */
+}
+
+//* Dark mode styles for the react-datepicker calendar */
+.custom-datepicker-popover {
+  background-color: #1a1a1a; /* Dark background */
+  color: #e0e0e0; /* Light text */
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.custom-datepicker-popover .react-datepicker__header {
+  background-color: #333333; /* Dark header */
+  color: #e0e0e0; /* Light text in the header */
+}
+
+.custom-datepicker-popover .react-datepicker__day {
+  color: #b3b3b3; /* Light text color for days */
+}
+
+.custom-datepicker-popover .react-datepicker__day--selected {
+  background-color: #4e9f80; /* Highlight selected day */
+  color: #fff; /* White text on selected day */
+}
+
+.custom-datepicker-popover .react-datepicker__day:hover {
+  background-color: #444444; /* Darker gray when hovering over days */
+  color: #fff;
+}
+
+.custom-datepicker-popover .react-datepicker__day--today {
+  background-color: #4e9f80; /* Highlight today's day */
+  color: #fff;
+}

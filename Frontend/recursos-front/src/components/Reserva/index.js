@@ -6,6 +6,7 @@ import ConfirmarButton from "../ConfirmarButton";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 import { CSSTransition } from "react-transition-group";
 import "./Reserva.css";
+import ReservaFilterForm from "./ReservaFilterForm";
 
 Modal.setAppElement("#root");
 const Reserva = () => {
@@ -55,13 +56,30 @@ const Reserva = () => {
     setSelectedReserva(null);
   };
 
+  const fetchPessoaName = async (pessoaId) => {
+    try {
+      const response = await axios.get(
+        `http://127.0.0.1:8000/recursos/users/${pessoaId}`
+      );
+      return response.data.username; // Adjust according to the field that has the name
+    } catch (error) {
+      console.error("Error fetching pessoa name", error);
+      return "Unknown"; // Fallback if there's an error
+    }
+  };
+
   const fetchData = async () => {
     try {
       const response = await axios.get(
         "http://127.0.0.1:8000/reservas/listar/"
       );
-      setData(response.data);
-      console.log(response.data.results);
+      const reservas = await Promise.all(
+        response.data.results.map(async (reserva) => {
+          const pessoaName = await fetchPessoaName(reserva.id_pessoa);
+          return { ...reserva, pessoa_name: pessoaName };
+        })
+      );
+      setData(reservas);
     } catch (error) {
       setError(error.message);
     } finally {
@@ -94,8 +112,12 @@ const Reserva = () => {
         </div>
       </CSSTransition>
 
+      <div>
+        <ReservaFilterForm onFilter={fetchData} />
+      </div>
+
       <ReservaTable
-        data={data.results}
+        data={data}
         onEdit={openEditModal}
         onDelete={openConfirmationModal}
       ></ReservaTable>

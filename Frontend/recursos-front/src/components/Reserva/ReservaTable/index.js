@@ -4,6 +4,7 @@ const ReservaTable = ({ data, onEdit, onDelete }) => {
   const columns = [
     { header: "ID", accessor: "id_reserva" },
     { header: "ID Pessoa", accessor: "id_pessoa" },
+    { header: "Pessoa", accessor: "pessoa_name" },
     {
       header: "Data reserva",
       render: (item) =>
