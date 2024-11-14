@@ -36,8 +36,8 @@ const BemLookup = ({ selectedBems, onBemSelect }) => {
 
   const handleSelect = (bem) => {
     onBemSelect(bem);
-    setQuery("");
-    setResults([]);
+    // setQuery("");
+    // setResults([]);
   };
 
   return (
@@ -73,8 +73,8 @@ const BemLookup = ({ selectedBems, onBemSelect }) => {
                 {selectedBems.some(
                   (selectedBem) => selectedBem.id_bem === bem.id_bem
                 )
-                  ? "Selected"
-                  : "Select"}
+                  ? "Selecionado"
+                  : "Selecione"}
               </button>
             </li>
           ))}
