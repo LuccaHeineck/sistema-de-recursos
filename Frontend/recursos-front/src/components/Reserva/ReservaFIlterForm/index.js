@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import "react-datepicker/dist/react-datepicker.css";
 import "../ReservaFilterForm/Reserva.css";
 import DatepickerField from "../../DatePickerField";
-import ReactInputMask from "react-input-mask";
 
 const ReservaFilterForm = ({ onFilter }) => {
   const [id, setId] = useState("");
@@ -71,11 +70,11 @@ const ReservaFilterForm = ({ onFilter }) => {
           </div>
 
           <div>
-            <label className="block mb-1 text-md" htmlFor="dataValidade">
+            <label className="block mb-1 text-md" htmlFor="dataReserva">
               Data Reserva
             </label>
             <DatepickerField
-              label="Data Validade"
+              label="Data Reserva"
               selectedDate={dataReserva}
               onChange={(date) => setDataReserva(date)}
               placeholder="DD/MM/YYYY"

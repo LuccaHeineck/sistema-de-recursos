@@ -29,6 +29,15 @@ const BemFilterForm = ({ onFilter, tiposBem }) => {
     onFilter(filters);
   };
 
+  const clearForm = () => {
+    setIdBem("");
+    setDescricao("");
+    setPermiteReserva("");
+    setStatusBem("");
+    setIdTipoBem("");
+    setCriadoPor("");
+  };
+
   return (
     <div>
       <div className="flex justify-between items-center">
@@ -139,6 +148,17 @@ const BemFilterForm = ({ onFilter, tiposBem }) => {
             <span className="absolute inset-0 bg-customBlue rounded-full transform scale-0 transition-transform duration-300 group-hover:scale-150 group-hover:origin-bottom"></span>
             <span className="relative transition duration-300 group-hover:text-white">
               Filtrar
+            </span>
+          </button>
+
+          <button
+            className="relative mb-6 border border-red-600 flex items-center justify-center p-2 px-7 text-lg rounded-md bg-transparent text-red-600 overflow-hidden transition duration-300 group"
+            type="button"
+            onClick={clearForm}
+          >
+            <span className="absolute inset-0 bg-red-600 rounded-full transform scale-0 transition-transform duration-300 group-hover:scale-150 group-hover:origin-bottom"></span>
+            <span className="relative transition duration-300 group-hover:text-customGrey">
+              Limpar
             </span>
           </button>
 
