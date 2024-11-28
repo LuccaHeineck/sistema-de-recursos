@@ -6,7 +6,7 @@ import ConfirmarButton from "../ConfirmarButton";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 import { CSSTransition } from "react-transition-group";
 import "./Reserva.css";
-import ReservaFilterForm from "./ReservaFilterForm";
+import ReservaFIlterForm from "./ReservaFIlterForm";
 
 Modal.setAppElement("#root");
 const Reserva = () => {
@@ -113,7 +113,7 @@ const Reserva = () => {
       </CSSTransition>
 
       <div>
-        <ReservaFilterForm onFilter={fetchData} />
+        <ReservaFIlterForm onFilter={fetchData} />
       </div>
 
       <ReservaTable
