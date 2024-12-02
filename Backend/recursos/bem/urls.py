@@ -13,5 +13,7 @@ urlpatterns = [
     path('tipo_bem/editar/<int:pk>/',
          views.TipoBemUpdateView.as_view(), name='atualizar-tipobem'),
     path('tipo_bem/deletar/<int:pk>/',
-         views.TipoBemDeleteView.as_view(), name='deletar-tipobem')
+         views.TipoBemDeleteView.as_view(), name='deletar-tipobem'),
+    path('kit/listar/', views.KitListView.as_view(),
+         name='listar-kits'),
 ]

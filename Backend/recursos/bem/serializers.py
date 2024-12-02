@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Bem, TipoBem
+from .models import Bem, TipoBem, Kit
 
 
 class TipoBemSerializer(serializers.ModelSerializer):
@@ -49,3 +49,10 @@ class TipoBemSerializer(serializers.ModelSerializer):
     class Meta:
         model = TipoBem
         fields = ["id_tipo_bem", "tipo_bem"]
+        
+        
+class KitSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Kit
+        fields = '__all__'

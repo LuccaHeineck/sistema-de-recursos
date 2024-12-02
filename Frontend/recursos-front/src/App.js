@@ -16,6 +16,7 @@ import TipoBemCreateForm from "./components/TipoBem/TipoBemCreateForm";
 import Retirada from "./components/Retirada";
 import Reserva from "./components/Reserva";
 import "./App.css";
+import Devolucao from "./components/Devolucao";
 
 const App = () => {
   const [token, setToken] = useState(localStorage.getItem("token"));
@@ -111,6 +112,19 @@ const App = () => {
               token && user ? (
                 <div>
                   <Retirada />
+                </div>
+              ) : (
+                <Navigate to="/login" />
+              )
+            }
+          />
+
+          <Route
+            path="/devolucao"
+            element={
+              token && user ? (
+                <div>
+                  <Devolucao />
                 </div>
               ) : (
                 <Navigate to="/login" />

@@ -31,7 +31,7 @@ const Menu = () => {
       label: "Retirada",
     },
     devolucao: {
-      path: "/devolucoes",
+      path: "/devolucao",
       icon: ArrowLeftEndOnRectangleIcon,
       label: "Devolução",
     },

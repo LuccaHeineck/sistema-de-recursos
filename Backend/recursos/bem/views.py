@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.generics import UpdateAPIView
-from .models import Bem, TipoBem
-from .serializers import BemSerializer, TipoBemSerializer
+from .models import Bem, TipoBem, Kit
+from .serializers import BemSerializer, TipoBemSerializer, KitSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -134,3 +134,14 @@ class TipoBemDeleteView(APIView):
 
         tipo_bem.delete()
         return Response({'message': 'TipoBem deletado com sucesso'}, status=status.HTTP_204_NO_CONTENT)
+
+class KitListView(APIView):
+    
+    def get(self, request): 
+        id_kit = request.GET.get('id_kit', None)
+        descriacao = request.GET.get('descricao', None)
+        id_bem = request.GET.get('id_bem', None)
+        
+        kits = Kit.objects.all()
+        serializer = KitSerializer(kits, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
