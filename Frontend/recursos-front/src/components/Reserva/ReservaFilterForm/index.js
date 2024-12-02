@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "react-datepicker/dist/react-datepicker.css";
-import "../ReservaFIlterForm/Reserva.css";
+import "../ReservaFilterForm/Reserva.css";
 import DatepickerField from "../../DatePickerField";
 
-const ReservaFIlterForm = ({ onFilter }) => {
+const ReservaFilterForm = ({ onFilter }) => {
   const [id, setId] = useState("");
   const [idPessoa, setIdPessoa] = useState("");
   const [pessoaName, setPessoaName] = useState("");
@@ -131,4 +131,4 @@ const ReservaFIlterForm = ({ onFilter }) => {
   );
 };
 
-export default ReservaFIlterForm;
+export default ReservaFilterForm;
