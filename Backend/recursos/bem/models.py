@@ -36,3 +36,9 @@ class Bem(models.Model):
 
     class Meta:
         db_table = 'bem'
+
+
+class Kit(models.Model):
+    id_kit = models.AutoField(primary_key=True)
+    id_bem = models.ForeignKey(Bem, on_delete=models.CASCADE)
+    descricao = models.TextField(blank=True, null=True)
