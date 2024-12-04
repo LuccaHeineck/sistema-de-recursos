@@ -24,5 +24,3 @@ class ItensReserva(models.Model):
 
     class Meta:
         unique_together = (("id_reserva", "id_bem"),)
-
-

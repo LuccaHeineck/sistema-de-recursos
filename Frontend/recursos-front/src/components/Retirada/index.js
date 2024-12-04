@@ -2,11 +2,15 @@ import axios from "axios";
 import React, { useState } from "react";
 import BemLookup from "./BemLookup";
 import UserLookup from "./UserLookup";
+import ItensRetiradaModal from "./RetiradaTableItems";
 
 const Retirada = () => {
   const [showNextPart, setShowNextPart] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [selectedBems, setSelectedBems] = useState([]);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedRetirada, setSelectedRetirada] = useState(null);
 
   const API_URL = "http://localhost:8000/retiradas/";
 
@@ -29,20 +33,54 @@ const Retirada = () => {
   };
 
   const handleFinishClick = async () => {
-    try {
-      const retirada = {
-        data_retirada: today.format("YYYY-MM-DD HH:mm:ss"),
-        status_retirada: "Em andamento",
-        motivo_retirada: "TCC",
-        id_pessoa: selectedUser.id,
-      };
+    const retirada = {
+      data_retirada: today.format("YYYY-MM-DD HH:mm:ss"),
+      status_retirada: "Em andamento",
+      motivo_retirada: "TCC",
+      id_pessoa: selectedUser.id,
+    };
 
-      const response = await axios.post(API_URL + "criar/", retirada, {
+    setSelectedRetirada(retirada);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedRetirada(null);
+  };
+
+  const confirmRetirada = async () => {
+    try {
+      const response = await axios.post(API_URL + "criar/", selectedRetirada, {
         headers: { "Content-Type": "application/json" },
       });
+      console.log(response);
 
       if (response.status === 200 || response.status === 201) {
-        console.log("TESTE");
+        const idRetirada = response.data.id_retirada;
+
+        const itensRetiradaData = selectedBems.map((bem) => ({
+          id_retirada: idRetirada,
+          id_bem: bem.id_bem,
+          quantidade_bem: 3,
+          data_retirada: selectedRetirada.data_retirada,
+          data_devolucao: "2024-12-03",
+          data_limite: "2024-12-04",
+          status_retirada: "Retirado",
+          observacao: "TODO",
+        }));
+
+        for (const item of itensRetiradaData) {
+          var responseItems = await axios.post(API_URL + "itens/criar", item, {
+            headers: { "Content-Type": "application/json" },
+          });
+        }
+
+        if (responseItems) {
+          console.log("Retirada efetuada com sucesso!");
+        }
+
+        console.log(responseItems.data);
       }
     } catch (error) {
       console.log(error);
@@ -135,6 +173,13 @@ const Retirada = () => {
           </div>
         )}
       </div>
+
+      <ItensRetiradaModal
+        isOpen={isModalOpen}
+        onRequestClose={closeModal}
+        selectedBems={selectedBems}
+        handleConfirm={confirmRetirada}
+      />
     </div>
   );
 };

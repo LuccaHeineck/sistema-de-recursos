@@ -9,11 +9,11 @@ class Retiradas(models.Model):
         ('Aula', 'Aula'),
         ('Projetos', 'Projetos')
     ]
-    
+
     STATUS_RETIRADA_CHOICES = [
         ('Em andamento', 'Em andamento'),
         ('Concluída', 'Concluída'),
-    ]    
+    ]
 
     id_retirada = models.AutoField(primary_key=True)
     id_pessoa = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -25,7 +25,7 @@ class Retiradas(models.Model):
 
 
 class ItensRetirada(models.Model):
-    
+
     STATUS_ITEM_RETIRADA_CHOICES = [
         ('Retirado', 'Retirado'),
         ('Atrasado', 'Atrasado'),
@@ -33,7 +33,7 @@ class ItensRetirada(models.Model):
     ]
 
     id_retirada = models.ForeignKey(
-        Retiradas, on_delete=models.CASCADE, related_name='itens_retirada', primary_key=True)
+        Retiradas, on_delete=models.CASCADE, related_name='itens_retirada')
     id_bem = models.ForeignKey(
         Bem, on_delete=models.CASCADE, related_name='itens_retirada')
     quantidade_bem = models.IntegerField()
@@ -50,4 +50,3 @@ class ItensRetirada(models.Model):
         # constraints = [
         #     models.UniqueConstraint(fields=["id_retirada", "id_bem"], name="unique_id_retirada_id_bem")
         # ]
-

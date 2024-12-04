@@ -11,4 +11,3 @@ admin.site.register(TipoPessoa)
 admin.site.register(Retiradas)
 # admin.site.register(MotivoRetirada)
 admin.site.register(TipoBem)
-
