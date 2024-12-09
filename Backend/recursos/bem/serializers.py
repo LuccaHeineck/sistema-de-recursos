@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Bem, TipoBem, Kit
+from .models import Bem, TipoBem  # Kit
 
 
 class TipoBemSerializer(serializers.ModelSerializer):
@@ -15,7 +15,8 @@ class BemSerializer(serializers.ModelSerializer):
     )
     id_tipo_bem_nome = serializers.SerializerMethodField()
 
-    created_by = serializers.CharField(source="created_by.username", read_only=True)
+    created_by = serializers.CharField(
+        source="created_by.username", read_only=True)
 
     class Meta:
         model = Bem
@@ -42,17 +43,21 @@ class BemSerializer(serializers.ModelSerializer):
         instance.id_tipo_bem = validated_data.get(
             'id_tipo_bem', instance.id_tipo_bem)
 
+        if instance.quantidade_bem == 0:
+            instance.status_bem == 'R'
+
         instance.save()
         return instance
+
 
 class TipoBemSerializer(serializers.ModelSerializer):
     class Meta:
         model = TipoBem
         fields = ["id_tipo_bem", "tipo_bem"]
-        
-        
+
+
 class KitSerializer(serializers.ModelSerializer):
-    
+
     class Meta:
-        model = Kit
+       # model = Kit
         fields = '__all__'

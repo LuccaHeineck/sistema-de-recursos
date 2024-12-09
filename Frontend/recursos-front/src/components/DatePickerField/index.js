@@ -4,14 +4,23 @@ import "react-datepicker/dist/react-datepicker.css";
 import InputMask from "react-input-mask";
 import "../DatePickerField/DatePickerField.css";
 
-const DatepickerField = ({ label, selectedDate, onChange, placeholder }) => {
+const DatepickerField = ({
+  label,
+  selectedDate,
+  onChange,
+  placeholder,
+  moment = false,
+}) => {
   // Format date function (move it above to avoid the reference error)
   const formatDate = (date) => {
     if (!date) return "";
-    const day = String(date.getDate()).padStart(2, "0");
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const year = date.getFullYear();
-    return `${day}/${month}/${year}`;
+
+    if (!moment) {
+      const day = String(date.getDate()).padStart(2, "0");
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const year = date.getFullYear();
+      return `${day}/${month}/${year}`;
+    }
   };
 
   const [dateInput, setDateInput] = useState(

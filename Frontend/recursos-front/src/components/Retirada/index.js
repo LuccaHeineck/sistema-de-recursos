@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useState } from "react";
 import BemLookup from "./BemLookup";
 import UserLookup from "./UserLookup";
@@ -8,14 +7,11 @@ const Retirada = () => {
   const [showNextPart, setShowNextPart] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [selectedBems, setSelectedBems] = useState([]);
+  const [observations, setObservations] = useState({});
+  const [quantidadeBem, setQuantidadeBem] = useState(1);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedRetirada, setSelectedRetirada] = useState(null);
-
-  const API_URL = "http://localhost:8000/retiradas/";
-
-  // const today = new Date();
-  // today.setHours(today.getHours() - 3);
 
   const moment = require("moment");
   const today = moment();
@@ -36,7 +32,7 @@ const Retirada = () => {
     const retirada = {
       data_retirada: today.format("YYYY-MM-DD HH:mm:ss"),
       status_retirada: "Em andamento",
-      motivo_retirada: "TCC",
+      motivo_retirada: "",
       id_pessoa: selectedUser.id,
     };
 
@@ -49,53 +45,36 @@ const Retirada = () => {
     setSelectedRetirada(null);
   };
 
-  const confirmRetirada = async () => {
-    try {
-      const response = await axios.post(API_URL + "criar/", selectedRetirada, {
-        headers: { "Content-Type": "application/json" },
-      });
-      console.log(response);
-
-      if (response.status === 200 || response.status === 201) {
-        const idRetirada = response.data.id_retirada;
-
-        const itensRetiradaData = selectedBems.map((bem) => ({
-          id_retirada: idRetirada,
-          id_bem: bem.id_bem,
-          quantidade_bem: 3,
-          data_retirada: selectedRetirada.data_retirada,
-          data_devolucao: "2024-12-03",
-          data_limite: "2024-12-04",
-          status_retirada: "Retirado",
-          observacao: "TODO",
-        }));
-
-        for (const item of itensRetiradaData) {
-          var responseItems = await axios.post(API_URL + "itens/criar", item, {
-            headers: { "Content-Type": "application/json" },
-          });
-        }
-
-        if (responseItems) {
-          console.log("Retirada efetuada com sucesso!");
-        }
-
-        console.log(responseItems.data);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   const removeBem = (bemId) => {
     setSelectedBems((prevSelectedBems) =>
       prevSelectedBems.filter((bem) => bem.id_bem !== bemId)
     );
+    // Remover também a observação associada a este bem
+    setObservations((prevObservations) => {
+      const updatedObservations = { ...prevObservations };
+      delete updatedObservations[bemId];
+      return updatedObservations;
+    });
+  };
+
+  const handleObservationChange = (bemId, value) => {
+    setObservations((prevObservations) => ({
+      ...prevObservations,
+      [bemId]: value,
+    }));
+  };
+
+  const handleQuantidadeChange = (bemId, value) => {
+    const quantidade = value && value > 0 ? value : 1;
+    setQuantidadeBem((prevQuantidade) => ({
+      ...prevQuantidade,
+      [bemId]: quantidade,
+    }));
   };
 
   return (
-    <div className="p-6 flex gap-6 max-w-5xl mx-auto">
-      <div className="w-2/3">
+    <div className="p-6 flex gap-6 mx-auto">
+      <div className={`${showNextPart ? "w-1/2" : "w-full"}`}>
         {!showNextPart ? (
           <>
             <h1 className="text-2xl font-bold mb-4 text-center">
@@ -103,7 +82,7 @@ const Retirada = () => {
             </h1>
             <UserLookup onUserSelect={handleUserSelect} />
             {selectedUser && (
-              <div className="mt-4 p-4 bg-green-200 text-customGrey rounded-lg shadow-md">
+              <div className="mt-4 p-4 bg-green-200 text-customGrey rounded-lg shadow-md max-w-lg mx-auto">
                 <h2 className="text-xl font-semibold">Usuário selecionado</h2>
                 <p>Nome: {selectedUser.username}</p>
                 <p>ID: {selectedUser.id}</p>
@@ -111,16 +90,18 @@ const Retirada = () => {
               </div>
             )}
             {selectedUser && (
-              <button
-                onClick={handleNextClick}
-                className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
-              >
-                Próximo
-              </button>
+              <div className="max-w-lg mx-auto flex justify-end">
+                <button
+                  onClick={handleNextClick}
+                  className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+                >
+                  Próximo
+                </button>
+              </div>
             )}
           </>
         ) : (
-          <div className="p-6 bg-customGreyLight rounded-lg shadow-lg">
+          <div className={`p-6 bg-customGreyLight rounded-lg shadow-lg`}>
             <h2 className="text-2xl font-bold mb-4">Usuário selecionado</h2>
             <div className="bg-customGrey p-4 rounded-lg shadow mb-4">
               <p className="font-semibold text-lg">{selectedUser.name}</p>
@@ -145,9 +126,9 @@ const Retirada = () => {
           </div>
         )}
       </div>
-      <div className="w-1/2">
-        {selectedBems.length > 0 && (
-          <div className="w-100 p-4 bg-green-200 text-customGrey rounded-lg shadow-md">
+      {selectedBems.length > 0 && (
+        <div className="w-1/2">
+          <div className="w-550 p-4 bg-green-200 text-customGrey rounded-lg shadow-md">
             <h2 className="text-xl font-semibold mb-2">Bens selecionados</h2>
             <ul>
               {selectedBems.map((bem, index) => (
@@ -155,30 +136,57 @@ const Retirada = () => {
                   key={`${bem.id}-${index}`}
                   className={`${
                     selectedBems[0].id_bem === bem.id_bem ? "border-t-2" : ""
-                  } border-b-2 border-white py-2 flex items-center justify-between`}
+                  } border-b-2 border-white py-2 flex items-center justify-center`}
                 >
-                  <div className="flex gap-9">
+                  <div className="flex gap-4 items-center text-center">
                     <p>ID: {bem.id_bem}</p>
                     <p>Descrição: {bem.descricao}</p>
+
+                    <input
+                      type="number"
+                      min="1"
+                      value={quantidadeBem[bem.id_bem] || 1}
+                      onChange={(e) =>
+                        handleQuantidadeChange(bem.id_bem, e.target.value)
+                      }
+                      placeholder="Quantidade de itens"
+                      className="border rounded-md p-2 bg-customGrey text-white"
+                    />
+
+                    <input
+                      type="text"
+                      placeholder="Observação"
+                      value={observations[bem.id_bem] || ""}
+                      onChange={(e) =>
+                        handleObservationChange(bem.id_bem, e.target.value)
+                      }
+                      className="border rounded-md p-2 bg-customGrey text-white"
+                    />
+                    <button
+                      className="mt-4 mb-4 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-600"
+                      onClick={() => removeBem(bem.id_bem)}
+                    >
+                      Remover
+                    </button>
                   </div>
-                  <button
-                    className="mt-4 mb-4 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-600"
-                    onClick={() => removeBem(bem.id_bem)}
-                  >
-                    Remover
-                  </button>
                 </li>
               ))}
             </ul>
           </div>
-        )}
-      </div>
+        </div>
+      )}
 
       <ItensRetiradaModal
         isOpen={isModalOpen}
         onRequestClose={closeModal}
         selectedBems={selectedBems}
-        handleConfirm={confirmRetirada}
+        selectedRetirada={selectedRetirada}
+        dataLimite={moment(
+          selectedRetirada?.data_retirada,
+          "YYYY-MM-DD HH:mm:ss"
+        ).format("DD/MM/YYYY")}
+        observations={observations}
+        quantity={quantidadeBem}
       />
     </div>
   );
