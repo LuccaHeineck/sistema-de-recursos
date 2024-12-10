@@ -91,10 +91,18 @@ class ItensRetiradaCreateView(APIView):
 class ItensRetiradaUpdateView(UpdateAPIView):
     queryset = ItensRetirada.objects.all()
     serializer_class = ItensRetiradaSerializer
-    # permission_classes = [IsAuthenticated]  # Habilite se precisar de autenticação
+
+    def get_object(self):
+        id_retirada = self.kwargs.get("id_retirada")
+        id_bem = self.kwargs.get("id_bem")
+        print("id_retirada:", id_retirada, "id_bem:", id_bem)  # Debugging
+        return ItensRetirada.objects.get(id_retirada=id_retirada, id_bem=id_bem)
 
     def perform_update(self, serializer):
+        print("Request Data:", self.request.data)  # Debugging
         serializer.save()
+
+
 
 
 class ItensRetiradaDeleteView(DestroyAPIView):
@@ -138,3 +146,25 @@ class ItensRetiradaListView(APIView):
         # Serializando os resultados filtrados
         serializer = ItensRetiradaSerializer(itens_retirada, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class ItensRetiradaByPessoaListView(APIView):
+    def get(self, request, id_pessoa):
+        # Verifica se o id_pessoa foi fornecido
+        if not id_pessoa:
+            return Response({"detail": "id_pessoa parameter is required."}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Filtra os itens de retirada pela pessoa
+        itens_retirada = ItensRetirada.objects.filter(
+            id_retirada__id_pessoa=id_pessoa
+            ).exclude(
+                status_retirada="Devolvido"
+            ).exclude(
+                data_devolucao__isnull=False
+            )
+
+
+        # Serializa os itens encontrados
+        serializer = ItensRetiradaSerializer(itens_retirada, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+   

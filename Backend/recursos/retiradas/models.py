@@ -32,6 +32,7 @@ class ItensRetirada(models.Model):
         ('Devolvido', 'Devolvido'),
     ]
 
+    id = models.AutoField(primary_key=True) 
     id_retirada = models.ForeignKey(
         Retiradas, on_delete=models.CASCADE, related_name='itens_retirada')
     id_bem = models.ForeignKey(

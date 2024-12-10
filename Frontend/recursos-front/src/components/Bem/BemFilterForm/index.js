@@ -20,6 +20,7 @@ const BemFilterForm = ({ onFilter, tiposBem }) => {
       created_by: criadoPor,
       status_bem: statusBem,
       id_tipo_bem: idTipoBem,
+      id_tipo_bem: idTipoBem,
     };
 
     if (permiteReserva !== "") {

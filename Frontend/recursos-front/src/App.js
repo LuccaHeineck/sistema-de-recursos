@@ -17,6 +17,7 @@ import Retirada from "./components/Retirada";
 import Reserva from "./components/Reserva";
 import "./App.css";
 import Devolucao from "./components/Devolucao";
+import ReservaCreateForm from "./components/Reserva/ReservaCreateForm";
 
 const App = () => {
   const [token, setToken] = useState(localStorage.getItem("token"));
@@ -138,6 +139,19 @@ const App = () => {
               token && user ? (
                 <div>
                   <Reserva />
+                </div>
+              ) : (
+                <Navigate to="/login" />
+              )
+            }
+          />
+
+          <Route
+            path="/reserva/inserir"
+            element={
+              token && user ? (
+                <div>
+                  <ReservaCreateForm />
                 </div>
               ) : (
                 <Navigate to="/login" />
