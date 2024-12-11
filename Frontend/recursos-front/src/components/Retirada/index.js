@@ -103,7 +103,7 @@ const Retirada = () => {
           <p>Retirada efetuada com sucesso!</p>
         </div>
       </CSSTransition>
-      <div className={`${showNextPart ? "w-1/2" : "w-full"}`}>
+      <div className={`${showNextPart ? "w-1/3" : "w-full"}`}>
         {!showNextPart ? (
           <>
             <h1 className="text-2xl font-bold mb-4 text-center">
@@ -160,7 +160,7 @@ const Retirada = () => {
         )}
       </div>
       {selectedBems.length > 0 && (
-        <div className="w-1/2">
+        <div className="w-2/3">
           <div className="w-550 p-4 bg-green-200 text-customGrey rounded-lg shadow-md">
             <h2 className="text-xl font-semibold mb-2">Bens selecionados</h2>
             <ul>

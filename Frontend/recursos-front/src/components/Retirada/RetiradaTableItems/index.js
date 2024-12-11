@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Modal from "react-modal";
 import GenericTable from "../../GenericTable";
 import DatepickerField from "../../DatePickerField";
@@ -10,6 +10,7 @@ const API_URL = "http://localhost:8000/";
 const columns = [
   { header: "ID", accessor: "id_bem" },
   { header: "Bem", accessor: "descricao" },
+  { header: "Quantidade", accessor: "quantidade_bem" },
   { header: "Observações", accessor: "observacao" },
 ];
 
@@ -25,7 +26,6 @@ const ItensRetiradaModal = ({
   const [dataLimite, setDataLimite] = useState(null);
   const [motivoRetirada, setMotivoRetirada] = useState("TCC");
 
-  // Função que define a dataLimite, que é a data de retirada + 7 dias
   const setInitialDate = () => {
     if (selectedRetirada?.data_retirada) {
       const initialDate = moment(
@@ -41,6 +41,15 @@ const ItensRetiradaModal = ({
   useEffect(() => {
     setInitialDate();
   }, [selectedRetirada]);
+
+  // Criar tabela derivada com useMemo
+  const selectedBemsTable = useMemo(() => {
+    return selectedBems.map((bem) => ({
+      ...bem,
+      quantidade_bem: quantity[bem.id_bem] || 0,
+      observacao: observations[bem.id_bem] || "",
+    }));
+  }, [selectedBems, quantity, observations]);
 
   const confirmRetirada = async () => {
     try {
@@ -58,50 +67,50 @@ const ItensRetiradaModal = ({
       if (response.status === 200 || response.status === 201) {
         selectedRetirada.idRetirada = response.data.id_retirada;
 
-        const itensRetiradaData = selectedBems.map((bem) => ({
+        const itensRetiradaData = selectedBemsTable.map((bem) => ({
           id_retirada: selectedRetirada.idRetirada,
           id_bem: bem.id_bem,
-          quantidade_bem: quantity[bem.id_bem],
+          quantidade_bem: bem.quantidade_bem,
           data_retirada: selectedRetirada.data_retirada,
           data_devolucao: null,
           data_limite: moment(dataLimite, "MM/DD/YYYY HH:mm:ss").format(
             "YYYY-MM-DD HH:mm:ss"
           ),
           status_retirada: "Retirado",
-          observacao: observations[bem.id_bem] || null,
+          observacao: bem.observacao || null,
         }));
 
         // Atualizar bens em paralelo
         await Promise.all(
-          selectedBems.map(async (bem) => {
+          selectedBemsTable.map(async (bem) => {
             const bemResponse = await axios.get(
               `${API_URL}bem/listar/?id_bem=${bem.id_bem}`
             );
 
             const bemData = bemResponse.data.results[0];
             const updatedBemData = {
-              status_bem: quantity[bem.id_bem] === 0 ? "R" : "D",
-              quantidade_bem: bemData.quantidade_bem - quantity[bem.id_bem],
+              status_bem: bem.quantidade_bem === 0 ? "R" : "D",
+              quantidade_bem: bemData.quantidade_bem - bem.quantidade_bem,
             };
 
-            console.log(updatedBemData.quantidade_bem);
-
-            axios.patch(`${API_URL}bem/editar/${bem.id_bem}/`, updatedBemData, {
-              headers: { "Content-Type": "application/json" },
-            });
+            await axios.patch(
+              `${API_URL}bem/editar/${bem.id_bem}/`,
+              updatedBemData,
+              {
+                headers: { "Content-Type": "application/json" },
+              }
+            );
           })
         );
 
         // Criar itens da retirada em paralelo
-        const teste = await Promise.all(
+        await Promise.all(
           itensRetiradaData.map((item) => {
-            axios.post(`${API_URL}retiradas/itens/criar`, item, {
+            return axios.post(`${API_URL}retiradas/itens/criar`, item, {
               headers: { "Content-Type": "application/json" },
             });
-            console.log(item);
           })
         );
-        console.log(teste);
       }
       endForm();
     } catch (error) {
@@ -128,9 +137,9 @@ const ItensRetiradaModal = ({
           <div className="space-y-4">
             <GenericTable
               columns={columns}
-              data={selectedBems}
+              data={selectedBemsTable}
               actions={false}
-            ></GenericTable>
+            />
             <p>
               Data da retirada:
               {" " +

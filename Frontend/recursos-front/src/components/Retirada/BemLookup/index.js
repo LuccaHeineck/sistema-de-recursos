@@ -27,7 +27,12 @@ const BemLookup = ({ selectedBems, onBemSelect }) => {
       const response = await axios.get(
         API_URL + `${isNumeric ? `?id_bem=${query}` : `?descricao=${query}`}`
       );
-      setResults(response.data.results);
+
+      const filteredResults = response.data.results.filter(
+        (item) => item.quantidade_bem > 0 && item.status_bem === "D"
+      );
+
+      setResults(filteredResults);
     } catch (error) {
       setResults([]);
     }

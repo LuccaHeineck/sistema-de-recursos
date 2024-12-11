@@ -17,6 +17,8 @@ urlpatterns = [
          name='editar-itens_retirada'),
     path('itens/deletar/<int:pk>', views.ItensRetiradaDeleteView.as_view(),
          name='deletar-itens_retirada'),
-     path('itens/listar-pessoa/<int:id_pessoa>', views.ItensRetiradaByPessoaListView.as_view(),
+    path('itens/listar-pessoa/<int:id_pessoa>', views.ItensRetiradaByPessoaListView.as_view(),
          name='listar-itens-by-pessoa'),
+
+    path('bem_resumo/', views.BemResumoView.as_view(), name='bem_resumo'),
 ]

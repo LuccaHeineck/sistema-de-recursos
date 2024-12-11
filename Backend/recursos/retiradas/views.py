@@ -7,6 +7,7 @@ from rest_framework.pagination import PageNumberPagination
 
 from .serializer import ItensRetiradaSerializer, RetiradasSerializer
 from .models import ItensRetirada, Retiradas
+from django.db import connection
 
 
 class RetiradaCreateView(APIView):
@@ -164,3 +165,32 @@ class ItensRetiradaByPessoaListView(APIView):
         # Serializa os itens encontrados
         serializer = ItensRetiradaSerializer(itens_retirada, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class BemResumoView(APIView):
+    def get(self, request, *args, **kwargs):
+        # Recuperando o parâmetro id_bem da URL
+        id_retirada_id = request.query_params.get('id_retirada_id')
+
+        # Ajustando a consulta conforme o id_bem fornecido
+        query = "SELECT id_bem, descricao, tipo_bem, observacao, id_retirada_id FROM bem_resumo"
+        if id_retirada_id:
+            query += " WHERE id_retirada_id = %s"
+
+        with connection.cursor() as cursor:
+            cursor.execute(query, [id_retirada_id] if id_retirada_id else [])
+            rows = cursor.fetchall()
+
+        # Preparando os dados no formato esperado
+        bem_resumo_data = [
+            {
+                "id_bem": row[0],
+                "descricao": row[1],
+                "tipo_bem": row[2],
+                "observacao": row[3],
+                "id_retirada_id": row[4]
+            }
+            for row in rows
+        ]
+
+        return Response(bem_resumo_data, status=status.HTTP_200_OK)
