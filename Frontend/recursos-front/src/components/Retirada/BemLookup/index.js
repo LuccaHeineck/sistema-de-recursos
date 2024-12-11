@@ -5,7 +5,6 @@ const BemLookup = ({ selectedBems, onBemSelect }) => {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
 
-  // Mock data for demonstration purposes
   const API_URL = "http://127.0.0.1:8000/bem/listar/";
   const isNumeric = !isNaN(query);
 
@@ -14,12 +13,12 @@ const BemLookup = ({ selectedBems, onBemSelect }) => {
       if (query) {
         handleSearch();
       } else {
-        setResults([]); // Limpa os resultados se não houver query
+        setResults([]);
       }
-    }, 150); // Atraso de 150ms
+    }, 150);
 
     return () => {
-      clearTimeout(handler); // Limpa o timeout se a query mudar antes do tempo
+      clearTimeout(handler);
     };
   }, [query]);
 
@@ -52,14 +51,12 @@ const BemLookup = ({ selectedBems, onBemSelect }) => {
       {query && results.length > 0 && (
         <ul>
           {results.map((bem) => (
-            <li
-              key={bem.id_bem}
-              className="flex justify-between items-center border-b py-2"
-            >
-              <span>{bem.descricao}</span>
+            <li key={bem.id_bem} className="flex items-center border-b py-2">
+              <span>{bem.id_bem}</span>
+              <span className="ml-5">{bem.descricao}</span>
               <button
                 onClick={() => handleSelect(bem)}
-                className={`bg-blue-500 text-white px-2 py-1 rounded-lg ${
+                className={`ml-auto bg-blue-500 text-white px-2 py-1 rounded-lg ${
                   selectedBems.some(
                     (selectedBem) => selectedBem.id_bem === bem.id_bem
                   )
@@ -85,4 +82,3 @@ const BemLookup = ({ selectedBems, onBemSelect }) => {
 };
 
 export default BemLookup;
-// teste

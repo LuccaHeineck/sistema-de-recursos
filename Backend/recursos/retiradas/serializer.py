@@ -9,8 +9,9 @@ class RetiradasSerializer(serializers.ModelSerializer):
 
 
 class ItensRetiradaSerializer(serializers.ModelSerializer):
-    id_retirada = serializers.PrimaryKeyRelatedField(read_only=True)
-    id_bem = serializers.PrimaryKeyRelatedField(read_only=True)
+    id_retirada = serializers.PrimaryKeyRelatedField(
+        queryset=Retiradas.objects.all())
+    id_bem = serializers.PrimaryKeyRelatedField(queryset=Bem.objects.all())
     bem = serializers.SerializerMethodField()
 
     class Meta:
@@ -19,7 +20,6 @@ class ItensRetiradaSerializer(serializers.ModelSerializer):
             'id_retirada', 'id_bem', 'bem', 'quantidade_bem', 'data_retirada',
             'data_devolucao', 'data_limite', 'status_retirada', 'observacao',
         ]
-
 
     def get_bem(self, obj):
         try:

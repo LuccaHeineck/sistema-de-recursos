@@ -2,16 +2,19 @@ import React, { useState } from "react";
 import BemLookup from "./BemLookup";
 import UserLookup from "./UserLookup";
 import ItensRetiradaModal from "./RetiradaTableItems";
+import { CSSTransition } from "react-transition-group";
 
 const Retirada = () => {
   const [showNextPart, setShowNextPart] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [selectedBems, setSelectedBems] = useState([]);
   const [observations, setObservations] = useState({});
-  const [quantidadeBem, setQuantidadeBem] = useState(1);
+  const [quantidadeBem, setQuantidadeBem] = useState({});
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedRetirada, setSelectedRetirada] = useState(null);
+
+  const [showSuccess, setShowSuccess] = useState(false);
 
   const moment = require("moment");
   const today = moment();
@@ -22,6 +25,11 @@ const Retirada = () => {
 
   const handleBemSelect = (selectedBem) => {
     setSelectedBems((prevSelectedBems) => [...prevSelectedBems, selectedBem]);
+
+    setQuantidadeBem((prevQuantidade) => ({
+      ...prevQuantidade,
+      [selectedBem.id_bem]: prevQuantidade[selectedBem.id_bem] ?? 1,
+    }));
   };
 
   const handleNextClick = () => {
@@ -35,7 +43,6 @@ const Retirada = () => {
       motivo_retirada: "",
       id_pessoa: selectedUser.id,
     };
-
     setSelectedRetirada(retirada);
     setIsModalOpen(true);
   };
@@ -43,6 +50,18 @@ const Retirada = () => {
   const closeModal = () => {
     setIsModalOpen(false);
     setSelectedRetirada(null);
+  };
+
+  const endForm = () => {
+    setSelectedBems([]);
+    setSelectedRetirada(null);
+    setShowSuccess(true);
+    closeModal();
+    setShowNextPart(false);
+    setSelectedUser(null);
+    setTimeout(() => {
+      setShowSuccess(false);
+    }, 3000);
   };
 
   const removeBem = (bemId) => {
@@ -65,7 +84,7 @@ const Retirada = () => {
   };
 
   const handleQuantidadeChange = (bemId, value) => {
-    const quantidade = value && value > 0 ? value : 1;
+    const quantidade = Math.max(Number(value), 1);
     setQuantidadeBem((prevQuantidade) => ({
       ...prevQuantidade,
       [bemId]: quantidade,
@@ -74,6 +93,16 @@ const Retirada = () => {
 
   return (
     <div className="p-6 flex gap-6 mx-auto">
+      <CSSTransition
+        in={showSuccess}
+        timeout={300}
+        classNames="success"
+        unmountOnExit
+      >
+        <div className="fixed left-1/2 top-4 z-50 mb-4 p-4 bg-green-100 rounded-sm border-l-4 border-green-500 text-green-700">
+          <p>Retirada efetuada com sucesso!</p>
+        </div>
+      </CSSTransition>
       <div className={`${showNextPart ? "w-1/2" : "w-full"}`}>
         {!showNextPart ? (
           <>
@@ -110,7 +139,7 @@ const Retirada = () => {
             </div>
 
             <h2 className="text-2xl mb-4 text-center mt-10">
-              Selecione bens para reservar
+              Selecione bens para retirar
             </h2>
             <BemLookup
               selectedBems={selectedBems}
@@ -119,7 +148,11 @@ const Retirada = () => {
 
             <button
               onClick={handleFinishClick}
-              className="mt-4 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600"
+              className={`${
+                Array.isArray(selectedBems) && selectedBems.length === 0
+                  ? "invisible "
+                  : ""
+              }mt-4 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600`}
             >
               Retirar
             </button>
@@ -145,7 +178,7 @@ const Retirada = () => {
                     <input
                       type="number"
                       min="1"
-                      value={quantidadeBem[bem.id_bem] || 1}
+                      value={quantidadeBem[bem.id_bem] ?? 1}
                       onChange={(e) =>
                         handleQuantidadeChange(bem.id_bem, e.target.value)
                       }
@@ -187,6 +220,7 @@ const Retirada = () => {
         ).format("DD/MM/YYYY")}
         observations={observations}
         quantity={quantidadeBem}
+        endForm={endForm}
       />
     </div>
   );

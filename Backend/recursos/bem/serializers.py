@@ -42,12 +42,21 @@ class BemSerializer(serializers.ModelSerializer):
             'status_bem', instance.status_bem)
         instance.id_tipo_bem = validated_data.get(
             'id_tipo_bem', instance.id_tipo_bem)
+        instance.quantidade_bem = validated_data.get(
+            'quantidade_bem', instance.quantidade_bem)
 
         if instance.quantidade_bem == 0:
-            instance.status_bem == 'R'
+            instance.status_bem = 'R'
 
         instance.save()
         return instance
+
+    def validate_quantidade_bem(self, value):
+        if value < 0:
+            raise serializers.ValidationError(
+                "A quantidade de bens não pode ser negativa.")
+
+        return value
 
 
 class TipoBemSerializer(serializers.ModelSerializer):

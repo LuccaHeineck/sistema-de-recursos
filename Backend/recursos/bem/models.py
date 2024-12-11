@@ -18,7 +18,7 @@ class Bem(models.Model):
     ]
 
     id_bem = models.IntegerField(primary_key=True, validators=[
-                                 MinValueValidator(0.0)])
+        MinValueValidator(0.0)])
     descricao = models.TextField(blank=True, null=True)
     quantidade_bem = models.IntegerField(default=1)
     permite_reserva = models.BooleanField(null=True)

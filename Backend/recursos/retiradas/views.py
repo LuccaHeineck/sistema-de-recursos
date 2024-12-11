@@ -103,8 +103,6 @@ class ItensRetiradaUpdateView(UpdateAPIView):
         serializer.save()
 
 
-
-
 class ItensRetiradaDeleteView(DestroyAPIView):
     queryset = ItensRetirada.objects.all()
     serializer_class = ItensRetiradaSerializer
@@ -157,14 +155,12 @@ class ItensRetiradaByPessoaListView(APIView):
         # Filtra os itens de retirada pela pessoa
         itens_retirada = ItensRetirada.objects.filter(
             id_retirada__id_pessoa=id_pessoa
-            ).exclude(
-                status_retirada="Devolvido"
-            ).exclude(
-                data_devolucao__isnull=False
-            )
-
+        ).exclude(
+            status_retirada="Devolvido"
+        ).exclude(
+            data_devolucao__isnull=False
+        )
 
         # Serializa os itens encontrados
         serializer = ItensRetiradaSerializer(itens_retirada, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
-   

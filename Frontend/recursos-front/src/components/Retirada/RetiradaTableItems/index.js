@@ -5,7 +5,7 @@ import DatepickerField from "../../DatePickerField";
 import axios from "axios";
 import moment from "moment";
 
-const API_URL = "http://localhost:8000/retiradas/";
+const API_URL = "http://localhost:8000/";
 
 const columns = [
   { header: "ID", accessor: "id_bem" },
@@ -20,6 +20,7 @@ const ItensRetiradaModal = ({
   selectedRetirada,
   observations,
   quantity,
+  endForm,
 }) => {
   const [dataLimite, setDataLimite] = useState(null);
   const [motivoRetirada, setMotivoRetirada] = useState("TCC");
@@ -44,9 +45,15 @@ const ItensRetiradaModal = ({
   const confirmRetirada = async () => {
     try {
       selectedRetirada.motivo_retirada = motivoRetirada;
-      const response = await axios.post(API_URL + "criar/", selectedRetirada, {
-        headers: { "Content-Type": "application/json" },
-      });
+
+      // Criar a retirada principal
+      const response = await axios.post(
+        `${API_URL}retiradas/criar/`,
+        selectedRetirada,
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
 
       if (response.status === 200 || response.status === 201) {
         selectedRetirada.idRetirada = response.data.id_retirada;
@@ -64,31 +71,41 @@ const ItensRetiradaModal = ({
           observacao: observations[bem.id_bem] || null,
         }));
 
-        for (const bem of selectedBems) {
-          const updatedBem = {
-            status_bem: "D",
-          };
+        // Atualizar bens em paralelo
+        await Promise.all(
+          selectedBems.map(async (bem) => {
+            const bemResponse = await axios.get(
+              `${API_URL}bem/listar/?id_bem=${bem.id_bem}`
+            );
 
-          if (quantity[bem.id_bem] === 0) {
-            updatedBem.status_bem = "R";
-          }
-          await axios.patch(
-            `http://127.0.0.1:8000/bem/editar/${bem.id_bem}/`,
-            updatedBem,
-            {
+            const bemData = bemResponse.data.results[0];
+            const updatedBemData = {
+              status_bem: quantity[bem.id_bem] === 0 ? "R" : "D",
+              quantidade_bem: bemData.quantidade_bem - quantity[bem.id_bem],
+            };
+
+            console.log(updatedBemData.quantidade_bem);
+
+            axios.patch(`${API_URL}bem/editar/${bem.id_bem}/`, updatedBemData, {
               headers: { "Content-Type": "application/json" },
-            }
-          );
-        }
+            });
+          })
+        );
 
-        for (const item of itensRetiradaData) {
-          await axios.post(API_URL + "itens/criar", item, {
-            headers: { "Content-Type": "application/json" },
-          });
-        }
+        // Criar itens da retirada em paralelo
+        const teste = await Promise.all(
+          itensRetiradaData.map((item) => {
+            axios.post(`${API_URL}retiradas/itens/criar`, item, {
+              headers: { "Content-Type": "application/json" },
+            });
+            console.log(item);
+          })
+        );
+        console.log(teste);
       }
+      endForm();
     } catch (error) {
-      console.log(error);
+      console.error("Erro ao confirmar retirada:", error);
     }
   };
 

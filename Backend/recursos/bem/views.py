@@ -35,7 +35,6 @@ class BemUpdateView(UpdateAPIView):
     # permission_classes = [IsAuthenticated]  # Ensure the user is authenticated
 
     def perform_update(self, serializer):
-        # Optionally override this method if you need custom behavior on update
         serializer.save(updated_by=self.request.user)
 
 
@@ -65,7 +64,7 @@ class BemListView(APIView):
         quantidade_bem = request.GET.get('quantidade_bem', None)
 
         # Inicia a query sem filtros
-        bens = Bem.objects.all()
+        bens = Bem.objects.filter()
 
         # Adiciona filtros se houver parâmetros fornecidos
         if id_bem:
