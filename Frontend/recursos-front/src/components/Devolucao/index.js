@@ -37,7 +37,7 @@ const Devolucao = () => {
     }
   };
 
-  const handleDevolver = (e) => {
+  const handleDevolver = async (e) => {
     let sucesso = false;
 
     for (let item of dataDevolver) {
@@ -45,7 +45,7 @@ const Devolucao = () => {
       const updatedItem = {
         id_retirada: item.id_retirada,
         id_bem: item.id_bem,
-        quantidade_bem: item.quantidade_bem + 1,
+        quantidade_bem: item.quantidade_bem,
         data_devolucao: today.format("YYYY-MM-DD HH:mm:ss"),
         data_retirada: item.data_retirada,
         data_limite: item.data_limite,
@@ -71,6 +71,26 @@ const Devolucao = () => {
             console.error("Request setup error:", error.message);
           }
         });
+
+      const bemResponse = await axios.get(
+        `http://127.0.0.1:8000/bem/listar/?id_bem=${item.id_bem}`
+      );
+
+      const bemData = bemResponse.data.results[0];
+      const updatedBemData = {
+        status_bem: "D",
+        quantidade_bem: bemData.quantidade_bem + item.quantidade_bem,
+      };
+
+      console.log(updatedBemData.quantidade_bem);
+
+      axios.patch(
+        `http://127.0.0.1:8000/bem/editar/${item.id_bem}/`,
+        updatedBemData,
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
     }
 
     setSelectedUser(null);
@@ -87,7 +107,9 @@ const Devolucao = () => {
   };
 
   const onDevolver = (item) => {
-    const updatedData = data.filter((i) => i.id !== item.id);
+    const updatedData = data.filter(
+      (i) => i.id_bem !== item.id_bem || i.id_retirada !== item.id_retirada
+    );
 
     const updatedDataDevolver = [...dataDevolver, item];
 
@@ -97,7 +119,10 @@ const Devolucao = () => {
 
   const onVoltar = (item) => {
     const updatedData = [...data, item];
-    const updatedDataDevolver = dataDevolver.filter((i) => i.id !== item.id);
+
+    const updatedDataDevolver = dataDevolver.filter(
+      (i) => i.id_bem !== item.id_bem || i.id_retirada !== item.id_retirada
+    );
 
     setData(updatedData);
     setDataDevolver(updatedDataDevolver);
