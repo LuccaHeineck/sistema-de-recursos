@@ -5,4 +5,5 @@ Tecnologias utilizadas
    <img src="https://skillicons.dev/icons?i=tailwind,react,python,django,git&perline=20" />
 </div>
 
+<br>
 ![Página inicial](screenshots/sistemarecurso.png)
